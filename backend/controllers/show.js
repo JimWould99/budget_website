@@ -1,7 +1,36 @@
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
+
 exports.display_budget = async (req, res) => {
-  res.json({ mssg: "Not yet implemented display budget" });
+  const { id } = req.user;
+  const budgets = await prisma.budget.findMany({
+    where: {
+      userId: id,
+    },
+    orderBy: { createdAt: "asc" },
+  });
+  //console.log(budgets);
+  res.json({ mssg: budgets });
 };
 
 exports.display_expense = async (req, res) => {
-  res.json({ mssg: "Not yet implemented" });
+  const expenses = await prisma.expense.findMany({
+    where: {
+      budgetId: req.body.budgetId,
+    },
+    orderBy: { createdAt: "asc" },
+  });
+  console.log(expenses);
+  res.json({ mssg: expenses });
+};
+
+exports.display_user = async (req, res) => {
+  const email = req.body.email;
+  const user = await prisma.users.findUnique({
+    where: {
+      email: email,
+    },
+  });
+  console.log(user);
+  res.json({ mssg: user });
 };

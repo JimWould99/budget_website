@@ -5,33 +5,6 @@ const validator = require("validator");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-exports.add_budget = async (req, res) => {
-  const { name, amount, userId } = req.body;
-  const new_budget = await prisma.budget.create({
-    data: {
-      name,
-      amount,
-      userId,
-    },
-  });
-  // console.log(new_budget);
-  res.json({ mssg: new_budget });
-};
-
-exports.add_expense = async (req, res) => {
-  const { name, amount, budgetId } = req.body;
-  const new_expense = await prisma.expense.create({
-    data: {
-      name,
-      amount,
-      budgetId,
-    },
-  });
-  //console.log(new_expense);
-  res.json({ mssg: new_expense });
-};
-
-/*
 const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 };
@@ -90,4 +63,4 @@ exports.login_user = async (req, res) => {
   // create a token
   const token = createToken(user.id);
   res.json({ mssg: email, token });
-};*/
+};
