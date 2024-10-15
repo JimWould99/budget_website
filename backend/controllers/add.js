@@ -6,12 +6,13 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 exports.add_budget = async (req, res) => {
-  const { name, amount, userId } = req.body;
+  const { name, amount } = req.body;
+  const { id } = req.user;
   const new_budget = await prisma.budget.create({
     data: {
       name,
       amount,
-      userId,
+      userId: id,
     },
   });
   // console.log(new_budget);
@@ -30,64 +31,3 @@ exports.add_expense = async (req, res) => {
   //console.log(new_expense);
   res.json({ mssg: new_expense });
 };
-
-/*
-const createToken = (_id) => {
-  return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: "1d" });
-};
-
-const userExists = async (inputEmail) => {
-  const exists = await prisma.users.findUnique({
-    where: {
-      email: inputEmail,
-    },
-  });
-  return exists;
-};
-
-exports.add_user = async (req, res) => {
-  const { email, name, username, password } = req.body;
-  if (!email || !username || !password) {
-    return res.json({ error: "email in use" });
-  }
-  if (!validator.isEmail(email)) {
-    return res.json({ error: "Not a valid email" });
-  }
-  if (!validator.isStrongPassword(password)) {
-    return res.json({ error: "Password not strong enough" });
-  }
-  if (await userExists(email)) {
-    return res.json({ error: "email in use" });
-  }
-  salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(password, salt);
-  const new_user = await prisma.users.create({
-    data: {
-      email,
-      name,
-      username,
-      password: hash,
-    },
-  });
-  const token = createToken(new_user.id);
-  console.log(new_user);
-  res.json({ new_user, token });
-};
-
-exports.login_user = async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res.json({ error: "Please fill all fields" });
-  }
-  const user = await userExists(email);
-  if (!user) {
-    return res.json({ error: "Incorrect email" });
-  }
-  const match = bcrypt.compare(password, user.password);
-  if (!match) {
-    return res.json({ error: "Incorrect password" });
-  }
-  // create a token
-  const token = createToken(user.id);
-  res.json({ mssg: email, token });
-};*/
