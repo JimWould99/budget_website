@@ -20,9 +20,10 @@ exports.delete_expense = async (req, res) => {
 };
 
 exports.delete_user = async (req, res) => {
+  const { id } = req.user;
   const user = await prisma.users.delete({
     where: {
-      id: req.body.userId,
+      id: id,
     },
   });
   res.json({ mssg: user });

@@ -3,6 +3,7 @@ const prisma = new PrismaClient();
 
 exports.display_budget = async (req, res) => {
   const { id } = req.user;
+  //const id = req.body.user;
   const budgets = await prisma.budget.findMany({
     where: {
       userId: id,
@@ -20,17 +21,23 @@ exports.display_expense = async (req, res) => {
     },
     orderBy: { createdAt: "asc" },
   });
-  console.log(expenses);
+  //console.log(expenses);
   res.json({ mssg: expenses });
 };
 
 exports.display_user = async (req, res) => {
-  const email = req.body.email;
+  const { id } = req.user;
+  // const email = req.body.email;
   const user = await prisma.users.findUnique({
     where: {
-      email: email,
+      id: id,
+    },
+    select: {
+      email: true,
+      name: true,
+      username: true,
     },
   });
-  console.log(user);
+  //console.log(user);
   res.json({ mssg: user });
 };
