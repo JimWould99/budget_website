@@ -11,7 +11,7 @@ exports.display_budget = async (req, res) => {
     orderBy: { createdAt: "asc" },
   });
   //console.log(budgets);
-  res.json({ mssg: budgets });
+  res.json({ budgets });
 };
 
 exports.display_expense = async (req, res) => {

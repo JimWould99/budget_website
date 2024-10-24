@@ -1,12 +1,22 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, ReactNode } from "react";
 
-export const AuthContext = createContext();
+type AuthContextProviderProps = {
+  children: ReactNode;
+};
 
-export const AuthContextProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+type AuthContext = {
+  user: object | null;
+  login: (token: string) => void;
+  logout: () => void;
+};
+
+export const AuthContext = createContext({} as AuthContext);
+
+export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
+  const [user, setUser] = useState<object | null>(null);
   //console.log("user", user);
 
-  function login(token) {
+  function login(token: string) {
     setUser(token);
     console.log("setuser", user);
   }
