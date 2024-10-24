@@ -6,8 +6,9 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 exports.add_budget = async (req, res) => {
-  const { name, amount } = req.body;
+  let { name, amount } = req.body;
   const { id } = req.user;
+  amount = parseInt(amount);
   const new_budget = await prisma.budget.create({
     data: {
       name,

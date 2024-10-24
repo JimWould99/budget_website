@@ -2,14 +2,14 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../context/auth_context";
 
 const Sign_up_Page = () => {
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirm, setConfirm] = useState<string>("");
 
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(Boolean);
+  const [error, setError] = useState<boolean | null>(null);
+  const [loading, setLoading] = useState<boolean | null>(false);
   const { user, login, logout } = useContext(AuthContext);
 
   const sign_up_request = async () => {
