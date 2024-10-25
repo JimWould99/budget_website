@@ -1,12 +1,14 @@
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/auth_context";
+import { BudgetsContext } from "../context/budgets_context";
 import Header from "../components/header";
 import Budget_display from "../components/budget_display";
 import Add_budget_modal from "../components/add_budget_modal";
 const Main_page = () => {
-  const [allBudgets, setAllBudgets] = useState();
   const { user, login, logout } = useContext(AuthContext);
   console.log(`token`, user);
+  const { budgets, setBudgetsFunction } = useContext(BudgetsContext);
+
   useEffect(() => {
     const fetchBudgets = async () => {
       const options = {
@@ -24,19 +26,20 @@ const Main_page = () => {
         options
       );
       const json = await response.json();
+      console.log("json budgets", json);
       if (response.ok) {
-        setAllBudgets(json);
+        setBudgetsFunction(json.budgets);
       }
     };
     if (user) {
       fetchBudgets();
     }
-  }, [user]);
+  }, [user, budgets]);
   return (
     <>
       <Header></Header>
 
-      {allBudgets && console.log("budgets", allBudgets.budgets)}
+      {budgets && console.log("context budgets", budgets)}
 
       <div className="flex  flex-col items-center mt-16 gap-y-6">
         <div className="flex justify-start gap-4 w-5/6">
@@ -51,8 +54,8 @@ const Main_page = () => {
           </button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-4 gap-y-10  w-5/6">
-          {allBudgets &&
-            allBudgets.budgets.map((budget) => (
+          {budgets &&
+            budgets.map((budget) => (
               <Budget_display budget={budget}></Budget_display>
             ))}
         </div>

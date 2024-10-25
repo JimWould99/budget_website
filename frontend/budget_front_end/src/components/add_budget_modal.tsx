@@ -1,8 +1,10 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/auth_context";
+import { BudgetsContext } from "../context/budgets_context";
 
 const Add_budget_modal = () => {
   const { user, login, logout } = useContext(AuthContext);
+  const { budgets, addNewBudget } = useContext(BudgetsContext);
 
   const [error, setError] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean | null>(false);
@@ -31,6 +33,12 @@ const Add_budget_modal = () => {
       setLoading(false);
       setError(json.error);
     }
+
+    if (response.ok) {
+      setName("");
+      setAmount("");
+      addNewBudget(json);
+    }
   };
   return (
     <>
@@ -46,6 +54,7 @@ const Add_budget_modal = () => {
                 id="name"
                 className="border border-black h-10 w-full"
                 onChange={(e) => setName(e.target.value)}
+                value={name}
               />
             </div>
             <p>Maximum spend</p>
@@ -55,10 +64,12 @@ const Add_budget_modal = () => {
               id="amount"
               className="border border-black h-10 w-full"
               onChange={(e) => setAmount(e.target.value)}
+              value={amount}
             />
             <button
               type="submit"
               className="bg-blue-900 text-white py-2 px-4 rounded text-nowrap hover:bg-white hover:text-black hover:drop-shadow-2xl "
+              onClick={() => document.getElementById("my_modal_2").close()}
             >
               Add budget
             </button>
