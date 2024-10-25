@@ -45,7 +45,7 @@ const Add_budget_modal = () => {
       <dialog id="my_modal_2" className="modal">
         <div className="modal-box">
           <form action="" onSubmit={handleSubmit}>
-            <p className="text-xl">New budget</p>
+            <p className="text-2xl">New budget</p>
             <div className="w-full">
               <p>Name</p>
               <input

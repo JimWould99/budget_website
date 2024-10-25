@@ -25,6 +25,14 @@ exports.display_expense = async (req, res) => {
   res.json({ mssg: expenses });
 };
 
+exports.display_expenses = async (req, res) => {
+  const expenses = await prisma.expense.findMany({
+    orderBy: { createdAt: "asc" },
+  });
+  //console.log(expenses);
+  res.json({ mssg: expenses });
+};
+
 exports.display_user = async (req, res) => {
   const { id } = req.user;
   // const email = req.body.email;

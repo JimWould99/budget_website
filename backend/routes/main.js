@@ -16,10 +16,12 @@ const delete_controller = require("../controllers/delete");
 //display
 router.post("/display_budgets", display_controller.display_budget);
 router.post("/display_expenses", display_controller.display_expense);
+router.get("/display_all_expenses", display_controller.display_expenses);
 router.post("/display_user", display_controller.display_user);
 //add
 router.post("/add_budget", add_controller.add_budget);
 router.post("/add_expense", add_controller.add_expense);
+
 //router.post("/add_user", add_controller.add_user);
 //router.post("/login_user", add_controller.login_user);
 // edit
