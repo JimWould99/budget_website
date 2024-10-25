@@ -6,8 +6,14 @@ import Budget_display from "../components/budget_display";
 import Add_budget_modal from "../components/add_budget_modal";
 const Main_page = () => {
   const { user, login, logout } = useContext(AuthContext);
-  console.log(`token`, user);
-  const { budgets, setBudgetsFunction } = useContext(BudgetsContext);
+  //console.log(`token`, user);
+  const {
+    budgets,
+    expenses,
+    setBudgetsFunction,
+    setExpensesFunction,
+    addNewBudget,
+  } = useContext(BudgetsContext);
 
   useEffect(() => {
     const fetchBudgets = async () => {
@@ -26,20 +32,44 @@ const Main_page = () => {
         options
       );
       const json = await response.json();
-      console.log("json budgets", json);
       if (response.ok) {
         setBudgetsFunction(json.budgets);
+        console.log("budgets", budgets);
       }
     };
     if (user) {
       fetchBudgets();
     }
-  }, [user, budgets]);
+  }, [user]);
+
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      const options = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_URL}/display_all_expenses`,
+        options
+      );
+      const json = await response.json();
+      if (response.ok) {
+        setExpensesFunction(json.mssg);
+        console.log("expenses", json.mssg);
+      }
+    };
+    if (user) {
+      fetchExpenses();
+    }
+  }, [user]);
+
   return (
     <>
       <Header></Header>
-
-      {budgets && console.log("context budgets", budgets)}
+      {budgets && console.log(JSON.stringify(budgets))}
 
       <div className="flex  flex-col items-center mt-16 gap-y-6">
         <div className="flex justify-start gap-4 w-5/6">
@@ -55,8 +85,8 @@ const Main_page = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-4 gap-y-10  w-5/6">
           {budgets &&
-            budgets.map((budget) => (
-              <Budget_display budget={budget}></Budget_display>
+            budgets.map((budget, index) => (
+              <Budget_display key={index} budget={budget}></Budget_display>
             ))}
         </div>
       </div>

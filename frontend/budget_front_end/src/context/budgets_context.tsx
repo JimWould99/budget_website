@@ -18,12 +18,36 @@ export const BudgetsContextProvider = ({
     return budgets;
   }
 
+  function setExpensesFunction(expenses: object) {
+    setExpenses(expenses);
+    return expenses;
+  }
+
   function addNewBudget(budget: object) {
-    setBudgets([...budgets, budget]);
+    setBudgets((prevBudgets) => [...prevBudgets, budget.mssg]);
+  }
+
+  function addNewExpense(expense: object) {
+    setExpenses([...expenses, expense]);
+  }
+
+  function displayExpenses(budgetId: string) {
+    if (!expenses) {
+      return;
+    }
+    return expenses.filter((expense) => expense.budgetId === budgetId);
   }
   return (
     <BudgetsContext.Provider
-      value={{ budgets, expenses, setBudgetsFunction, addNewBudget }}
+      value={{
+        budgets,
+        expenses,
+        setBudgetsFunction,
+        setExpensesFunction,
+        addNewBudget,
+        addNewExpense,
+        displayExpenses,
+      }}
     >
       {children}
     </BudgetsContext.Provider>
