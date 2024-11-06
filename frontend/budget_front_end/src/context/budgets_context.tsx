@@ -14,7 +14,6 @@ export const BudgetsContextProvider = ({
 
   function setBudgetsFunction(budgets: object) {
     setBudgets(budgets);
-    console.log("budgets within context", budgets);
     return budgets;
   }
 
@@ -28,7 +27,8 @@ export const BudgetsContextProvider = ({
   }
 
   function addNewExpense(expense: object) {
-    setExpenses([...expenses, expense]);
+    setExpenses((prevExpenses) => [...prevExpenses, expense]);
+    //setExpenses([...expenses, expense]);
   }
 
   function displayExpenses(budgetId: string) {

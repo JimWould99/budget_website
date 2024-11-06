@@ -5,10 +5,9 @@ import { useContext } from "react";
 const View_expenses_model = ({ budget }) => {
   const { displayExpenses } = useContext(BudgetsContext);
   const expenses = displayExpenses(budget.id);
-  console.log("expenses", budget.name, expenses);
   return (
     <>
-      <dialog id="my_modal_4" className="modal">
+      <dialog id={budget.id} className="modal">
         <div className="modal-box">
           <p className="text-2xl font-semibold mb-6">{budget.name} expenses</p>
           {expenses &&

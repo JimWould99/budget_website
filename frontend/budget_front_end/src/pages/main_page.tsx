@@ -13,6 +13,7 @@ const Main_page = () => {
     setBudgetsFunction,
     setExpensesFunction,
     addNewBudget,
+    addNewExpense,
   } = useContext(BudgetsContext);
 
   useEffect(() => {
@@ -34,7 +35,6 @@ const Main_page = () => {
       const json = await response.json();
       if (response.ok) {
         setBudgetsFunction(json.budgets);
-        console.log("budgets", budgets);
       }
     };
     if (user) {
@@ -58,7 +58,6 @@ const Main_page = () => {
       const json = await response.json();
       if (response.ok) {
         setExpensesFunction(json.mssg);
-        console.log("expenses", json.mssg);
       }
     };
     if (user) {
@@ -69,7 +68,6 @@ const Main_page = () => {
   return (
     <>
       <Header></Header>
-      {budgets && console.log(JSON.stringify(budgets))}
 
       <div className="flex  flex-col items-center mt-16 gap-y-6">
         <div className="flex justify-start gap-4 w-5/6">
