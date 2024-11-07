@@ -30,6 +30,6 @@ exports.add_expense = async (req, res) => {
       budgetId,
     },
   });
-  //console.log(new_expense);
-  res.json({ name, amount, budgetId });
+  const { id, createdAt } = new_expense;
+  res.json({ id, createdAt, name, amount, budgetId });
 };

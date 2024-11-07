@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 exports.delete_budget = async (req, res) => {
-  const chosenExpenses = await prisma.expense.delete({
+  const chosenExpenses = await prisma.expense.deleteMany({
     where: {
       budgetId: req.body.budgetId,
     },
@@ -16,6 +16,7 @@ exports.delete_budget = async (req, res) => {
 };
 
 exports.delete_expense = async (req, res) => {
+  console.log("id", req.body.expenseId);
   const expense = await prisma.expense.delete({
     where: {
       id: req.body.expenseId,
