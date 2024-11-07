@@ -11,7 +11,7 @@ async function main() {
     },
   });*/
 
-  const user = await prisma.budget.deleteMany();
+  const user = await prisma.users.deleteMany();
   console.log(user);
 }
 

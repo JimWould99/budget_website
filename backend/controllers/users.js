@@ -16,15 +16,18 @@ const userExists = async (inputEmail) => {
   return exists;
 };
 exports.add_user = async (req, res) => {
-  const { email, name, username, password } = req.body;
-  if (!email || !username || !password) {
+  const { email, password } = req.body;
+  if (!email || !password) {
     return res.status(400).json({ error: "Please fill all fields" });
   }
   if (!validator.isEmail(email)) {
     return res.status(400).json({ error: "Not a valid email" });
   }
   if (!validator.isStrongPassword(password)) {
-    return res.status(400).json({ error: "Password not strong enough" });
+    return res.status(400).json({
+      error:
+        "Password must be stronger (min. 8 characters, 1 capital, 1 special, 1 number)",
+    });
   }
   if (await userExists(email)) {
     return res.status(400).json({ error: "email in use" });
@@ -34,14 +37,12 @@ exports.add_user = async (req, res) => {
   const new_user = await prisma.users.create({
     data: {
       email,
-      name,
-      username,
       password: hash,
     },
   });
   const token = createToken(new_user.id);
   console.log("new user", new_user);
-  res.json({ new_user, token });
+  res.json({ email, token });
 };
 exports.login_user = async (req, res) => {
   const { email, password } = req.body;
@@ -50,13 +51,13 @@ exports.login_user = async (req, res) => {
   }
   const user = await userExists(email);
   if (!user) {
-    return res.status(400).json({ error: "Incorrect email" });
+    return res.status(400).json({ error: "Incorrect email or password" });
   }
   const match = bcrypt.compare(password, user.password);
   if (!match) {
-    return res.status(400).json({ error: "Incorrect password" });
+    return res.status(400).json({ error: "Incorrect email or password" });
   }
   // create a token
   const token = createToken(user.id);
-  res.json({ mssg: email, token });
+  res.json({ email, token });
 };
