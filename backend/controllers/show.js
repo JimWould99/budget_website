@@ -26,7 +26,11 @@ exports.display_expense = async (req, res) => {
 };
 
 exports.display_expenses = async (req, res) => {
+  const { id } = req.user;
   const expenses = await prisma.expense.findMany({
+    where: {
+      userId: id,
+    },
     orderBy: { createdAt: "asc" },
   });
   //console.log(expenses);

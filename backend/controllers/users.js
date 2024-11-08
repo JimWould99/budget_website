@@ -41,7 +41,6 @@ exports.add_user = async (req, res) => {
     },
   });
   const token = createToken(new_user.id);
-  console.log("new user", new_user);
   res.json({ email, token });
 };
 exports.login_user = async (req, res) => {
