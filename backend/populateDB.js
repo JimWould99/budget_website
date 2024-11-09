@@ -11,8 +11,14 @@ async function main() {
     },
   });*/
 
-  const user = await prisma.budget.deleteMany();
-  console.log(user);
+  //const user = await prisma.budget.deleteMany();
+
+  const newDate = await prisma.lastChecked.create({
+    data: {
+      date: new Date(),
+    },
+  });
+  console.log("new date", newDate);
 }
 
 main()
