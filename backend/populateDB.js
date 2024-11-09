@@ -13,11 +13,7 @@ async function main() {
 
   //const user = await prisma.budget.deleteMany();
 
-  const newDate = await prisma.lastChecked.create({
-    data: {
-      date: new Date(),
-    },
-  });
+  const newDate = await prisma.lastChecked.findMany({});
   console.log("new date", newDate);
 }
 
