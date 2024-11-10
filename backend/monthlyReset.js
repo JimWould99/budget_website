@@ -7,7 +7,7 @@ exports.checkMonthDifference = async () => {
   let currentDate = new Date();
   if (
     (lastDate.getMonth() === 12 && currentDate.getMonth() === 1) ||
-    lastDate.getMonth() === currentDate.getMonth()
+    lastDate.getMonth() < currentDate.getMonth()
   ) {
     monthlyReset();
   } else {
@@ -27,18 +27,13 @@ exports.checkMonthDifference = async () => {
 };
 
 const monthlyReset = async () => {
-  console.log("reset");
+  const updatedExpenses = await prisma.expense.updateMany({
+    where: {
+      recurring: false,
+    },
+    data: {
+      amount: 0,
+    },
+  });
+  console.log(updatedExpenses);
 };
-
-/*
-exports.monthlyReset = async () => {
-  console.log("test");
-
-  cron.schedule("0 * * * * *", () => {
-    console.log("running a task every minute");
-  });
-
-  cron.schedule("0 0 1 * *", () => {
-    console.log("running a task every second");
-  });
-};*/

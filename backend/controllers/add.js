@@ -21,17 +21,18 @@ exports.add_budget = async (req, res) => {
 };
 
 exports.add_expense = async (req, res) => {
-  let { name, amount, budgetId } = req.body;
+  let { name, amount, recurring, budgetId } = req.body;
   const userId = req.user.id;
   amount = parseInt(amount);
   const new_expense = await prisma.expense.create({
     data: {
       name,
       amount,
+      recurring,
       budgetId,
       userId,
     },
   });
   const { id, createdAt } = new_expense;
-  res.json({ name, amount, id, budgetId, userId, createdAt });
+  res.json({ name, amount, recurring, id, budgetId, userId, createdAt });
 };
