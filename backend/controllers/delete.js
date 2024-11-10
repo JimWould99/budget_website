@@ -16,7 +16,7 @@ exports.delete_budget = async (req, res) => {
 };
 
 exports.delete_expense = async (req, res) => {
-  console.log("id", req.body.expenseId);
+  //console.log("id", req.body.expenseId);
   const expense = await prisma.expense.delete({
     where: {
       id: req.body.expenseId,

@@ -41,6 +41,7 @@ model Expense{
   createdAt DateTime @default(now())
   name String
   amount Int
+  recurring Boolean
   budget Budget @relation(fields: [budgetId], references: [id])
   budgetId String
   user Users @relation(fields: [userId], references: [id])

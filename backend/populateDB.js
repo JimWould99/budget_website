@@ -13,8 +13,8 @@ async function main() {
 
   //const user = await prisma.budget.deleteMany();
 
-  const newDate = await prisma.lastChecked.findMany({});
-  console.log("new date", newDate);
+  const deleteExpense = await prisma.expense.deleteMany({});
+  console.log("deleteExpenses", deleteExpense);
 }
 
 main()

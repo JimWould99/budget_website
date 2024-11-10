@@ -6,7 +6,7 @@ exports.edit_budget = async (req, res) => {
 };
 
 exports.edit_expense = async (req, res) => {
-  let { id, name, newAmount, budgetId, createdAt } = await req.body;
+  let { id, name, newAmount, budgetId, createdAt, recurring } = await req.body;
   const userId = req.user.id;
   newAmount = parseInt(newAmount);
   const deleteExpense = await prisma.expense.delete({
@@ -22,7 +22,17 @@ exports.edit_expense = async (req, res) => {
       budgetId,
       userId,
       createdAt,
+      recurring,
     },
   });
-  res.json({ id, name, amount: newAmount, budgetId, userId, createdAt });
+
+  res.json({
+    id,
+    name,
+    amount: newAmount,
+    budgetId,
+    userId,
+    createdAt,
+    recurring,
+  });
 };
