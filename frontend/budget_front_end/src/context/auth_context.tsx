@@ -14,15 +14,14 @@ export const AuthContext = createContext({} as AuthContext);
 
 export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const [user, setUser] = useState<object | null>(null);
-  //console.log("user", user);
 
   function login(token: string) {
     setUser(token);
-    console.log("setuser", user);
   }
 
   function logout() {
     setUser(null);
+    localStorage.removeItem("user");
   }
 
   useEffect(() => {

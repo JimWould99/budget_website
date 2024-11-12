@@ -1,4 +1,10 @@
-import { createContext, useEffect, useState, ReactNode } from "react";
+import {
+  createContext,
+  useEffect,
+  useReducer,
+  useState,
+  ReactNode,
+} from "react";
 
 type BudgetsContextProviderProps = {
   children: ReactNode;
@@ -6,49 +12,86 @@ type BudgetsContextProviderProps = {
 
 export const BudgetsContext = createContext();
 
+export const budgetReducer = (state, action) => {
+  switch (action.type) {
+    case "setBudgets":
+      //console.log("setbudgets:", action.payload);
+      return { ...state, budgets: action.payload };
+    case "setExpenses":
+      return { ...state, expenses: action.payload };
+    case "addNewBudget":
+      //console.log("state.budgets", state.budgets);
+      return {
+        ...state,
+        budgets: [action.payload, ...state.budgets],
+      };
+    case "addNewExpense":
+      return {
+        ...state,
+        expenses: [...state.expenses, action.payload],
+      };
+    case "displayExpenses":
+      if (!state.expenses) {
+        return state;
+      } else {
+        return {
+          ...state,
+          relevantExpenses: state.expenses.filter(
+            (expense) => expense.budgetId === action.payload
+          ),
+        };
+      }
+    case "updateExpense": {
+      const listOneRemoved = state.expenses.filter(
+        (expense) => expense.id !== action.payload.id
+      );
+      const updatedExpenses = [...listOneRemoved, action.payload];
+      const sortedExpenses = updatedExpenses.sort((a, b) => {
+        const first = new Date(a.createdAt).getTime();
+        const second = new Date(b.createdAt).getTime();
+        return first - second;
+      });
+      return {
+        ...state,
+        expenses: sortedExpenses,
+      };
+    }
+    case "deleteBudget": {
+      const newExpenses = state.expenses.filter(
+        (expense) => expense.budgetId !== action.payload
+      );
+      const newBudgets = state.budgets.filter(
+        (budget) => budget.id !== action.payload
+      );
+      return {
+        ...state,
+        expenses: newExpenses,
+        budgets: newBudgets,
+      };
+    }
+    case "deleteExpense": {
+      const newExpenses = state.expenses.filter(
+        (expense) => expense.id !== action.payload
+      );
+      return {
+        ...state,
+        expenses: newExpenses,
+      };
+    }
+    default:
+      return state;
+  }
+};
+
 export const BudgetsContextProvider = ({
   children,
 }: BudgetsContextProviderProps) => {
-  const [budgets, setBudgets] = useState<object | null>(null);
-  const [expenses, setExpenses] = useState<object | null>(null);
-
-  function setBudgetsFunction(budgets: object) {
-    setBudgets(budgets);
-    return budgets;
-  }
-
-  function setExpensesFunction(expenses: object) {
-    setExpenses(expenses);
-    return expenses;
-  }
-
-  function addNewBudget(budget: object) {
-    setBudgets((prevBudgets) => [...prevBudgets, budget.mssg]);
-  }
-
-  function addNewExpense(expense: object) {
-    setExpenses((prevExpenses) => [...prevExpenses, expense]);
-    //setExpenses([...expenses, expense]);
-  }
-
-  function displayExpenses(budgetId: string) {
-    if (!expenses) {
-      return;
-    }
-    return expenses.filter((expense) => expense.budgetId === budgetId);
-  }
+  const [state, dispatch] = useReducer(budgetReducer, {
+    budgets: null,
+    expenses: null,
+  });
   return (
-    <BudgetsContext.Provider
-      value={{
-        budgets,
-        expenses,
-        setBudgetsFunction,
-        setExpensesFunction,
-        addNewBudget,
-        addNewExpense,
-        displayExpenses,
-      }}
-    >
+    <BudgetsContext.Provider value={{ ...state, dispatch }}>
       {children}
     </BudgetsContext.Provider>
   );

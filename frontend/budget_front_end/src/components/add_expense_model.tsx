@@ -5,16 +5,27 @@ import { json } from "react-router-dom";
 
 const Add_expense_model = ({ budgetSelected }) => {
   const { user, login, logout } = useContext(AuthContext);
-  const { budgets, expenses, addNewExpense } = useContext(BudgetsContext);
-  const [error, setError] = useState<boolean | null>(null);
+  const { dispatch, budgets, expenses } = useContext(BudgetsContext);
+
+  const [errorColor, setErrorColor] = useState<string>("text-white");
   const [loading, setLoading] = useState<boolean | null>(false);
 
   const [name, setName] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [budgetCat, setBudgetCat] = useState<string>(budgetSelected.id);
+  const [recurring, setRecurring] = useState<Boolean>(false);
+
+  useEffect(() => {
+    setBudgetCat(budgetSelected.id);
+  }, [budgetSelected]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (name === "" || amount === "" || budgetCat === "") {
+      setErrorColor("text-red-500");
+      return;
+    }
 
     const request_details = {
       method: "POST",
@@ -22,7 +33,12 @@ const Add_expense_model = ({ budgetSelected }) => {
         Authorization: `Bearer ${user.token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, amount, budgetId: budgetCat }),
+      body: JSON.stringify({
+        name,
+        amount,
+        budgetId: budgetCat,
+        recurring,
+      }),
     };
 
     const response = await fetch(
@@ -39,8 +55,11 @@ const Add_expense_model = ({ budgetSelected }) => {
     if (response.ok) {
       setName("");
       setAmount("");
+      setRecurring(false);
       setBudgetCat(budgetSelected.id);
-      addNewExpense(json);
+      //addNewExpense(json);
+      dispatch({ type: "addNewExpense", payload: json });
+      document.getElementById(expense_id).close();
     }
   };
 
@@ -50,15 +69,20 @@ const Add_expense_model = ({ budgetSelected }) => {
     <>
       <dialog id={expense_id} className="modal">
         <div className="modal-box">
-          <form action="" onSubmit={handleSubmit}>
+          <form
+            action=""
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-4"
+          >
             <p className="text-2xl">New Expense</p>
+            <p>Budget selected: {budgetSelected.name}</p>
             <div className="w-full">
               <p>Expense name</p>
               <input
                 type="text"
                 name="name"
                 id="name"
-                className="border border-black h-10 w-full"
+                className="border border-black h-10 w-full pl-4"
                 onChange={(e) => setName(e.target.value)}
                 value={name}
               />
@@ -69,7 +93,7 @@ const Add_expense_model = ({ budgetSelected }) => {
                 type="number"
                 name="amount"
                 id="amount"
-                className="border border-black h-10 w-full"
+                className="border border-black h-10 w-full pl-4"
                 onChange={(e) => setAmount(e.target.value)}
                 value={amount}
               />
@@ -91,17 +115,29 @@ const Add_expense_model = ({ budgetSelected }) => {
                   ))}
               </select>
             </div>
+            <div className="flex items-center gap-10">
+              <input
+                type="checkbox"
+                className="toggle toggle-info"
+                checked={recurring}
+                onChange={(e) => {
+                  setRecurring(e.target.checked);
+                }}
+              />
+              {!recurring && <p>Non-recurring expense (reset each month)</p>}
+              {recurring && <p>Recurring expense </p>}
+            </div>
             <button
               type="submit"
-              className="bg-blue-900 text-white py-2 px-4 rounded text-nowrap hover:bg-white hover:text-black hover:drop-shadow-2xl "
-              onClick={() => document.getElementById(expense_id).close()}
+              className="bg-blue-900 text-white py-2 px-4 rounded text-nowrap hover:bg-white hover:text-black hover:drop-shadow-2xl w-1/3"
             >
-              Add budget
+              Add expense
             </button>
+            <p className={errorColor}>Please fill all categories</p>
           </form>
         </div>
         <form method="dialog" className="modal-backdrop">
-          <button>close</button>
+          <button onClick={() => setErrorColor(" text-white")}>close</button>
         </form>
       </dialog>
     </>
