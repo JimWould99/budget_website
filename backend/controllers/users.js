@@ -23,10 +23,18 @@ exports.add_user = async (req, res) => {
   if (!validator.isEmail(email)) {
     return res.status(400).json({ error: "Not a valid email" });
   }
-  if (!validator.isStrongPassword(password)) {
+  if (
+    !validator.isStrongPassword(password, {
+      minLength: 8,
+      minLowercase: 0,
+      minUppercase: 1,
+      minNumbers: 1,
+      minSymbols: 0,
+    })
+  ) {
     return res.status(400).json({
       error:
-        "Password must be stronger (min. 8 characters, 1 capital, 1 special, 1 number)",
+        "Password must be stronger (minimum 8 characters, 1 capital, 1 number)",
     });
   }
   if (await userExists(email)) {

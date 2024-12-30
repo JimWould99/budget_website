@@ -12,21 +12,21 @@ const Header = () => {
   };
   return (
     <>
-      <div className="bg-sky-400 h-20 w-full flex justify-center ">
-        <div className="w-5/6 flex justify-between content-center items-center">
+      <div className="drop-shadow-xl bg-sky-400 pb-3 pt-3 sm:p-0 sm:h-20 w-full flex justify-center ">
+        <div className="w-5/6 gap-4 sm:gap-0 flex flex-col sm:flex-row justify-between content-center sm:items-center">
           <Link to="/">
             <h1 className="text-3xl font-bold ">Budgets</h1>
           </Link>
-          <div className="flex gap-7 w-100">
+          <div className="flex  gap-4  w-100">
             {!user && (
               <>
                 <Link to="/sign_up">
-                  <button className="bg-lime-50 hover:bg-blue-900 hover:text-white text-black font-bold py-2 px-4 rounded text-nowrap">
+                  <button className="w-24 bg-lime-50 hover:bg-blue-900 hover:text-white text-black font-bold py-2 px-4 rounded text-nowrap">
                     Sign up
                   </button>
                 </Link>
                 <Link to="/login">
-                  <button className="bg-lime-50 hover:bg-blue-900 hover:text-white text-black font-bold py-2 px-4 rounded text-nowrap">
+                  <button className="w-24 bg-lime-50 hover:bg-blue-900 hover:text-white text-black font-bold py-2 px-4 rounded text-nowrap">
                     Log in
                   </button>
                 </Link>
@@ -37,12 +37,12 @@ const Header = () => {
                 <div className="bg-lime-50 text-black font-bold py-2 px-4 rounded text-nowrap">
                   {user.email}
                 </div>
-                <button
+                <div
                   onClick={() => logoutButton()}
                   className="bg-lime-50 hover:bg-blue-900 hover:text-white text-black font-bold py-2 px-4 rounded text-nowrap"
                 >
                   Log out
-                </button>
+                </div>
               </>
             )}
           </div>
