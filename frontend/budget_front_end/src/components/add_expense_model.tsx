@@ -75,7 +75,6 @@ const Add_expense_model = ({ budgetSelected }) => {
             className="flex flex-col gap-4"
           >
             <p className="text-2xl">New Expense</p>
-            <p>Budget selected: {budgetSelected.name}</p>
             <div className="w-full">
               <p>Expense name</p>
               <input

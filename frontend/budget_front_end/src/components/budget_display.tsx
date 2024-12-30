@@ -21,11 +21,6 @@ const Budget_display = ({ budget }) => {
     expense_amount = specificExpenses.reduce((total, expense) => {
       return total + expense.amount;
     }, 0);
-    console.log(
-      `specific expenses for ${budget.name}: ${JSON.stringify(
-        specificExpenses
-      )}`
-    );
   }
 
   /*
@@ -53,7 +48,7 @@ const Budget_display = ({ budget }) => {
 
   return (
     <>
-      <div className="border-2 border-black p-4 flex flex-col gap-y-6">
+      <div className="bg-white shadow-2xl border-2 border-black p-4 flex flex-col gap-y-6">
         <div className="flex justify-between">
           <p className="text-xl">{name}</p>
           <p className="text-xl">

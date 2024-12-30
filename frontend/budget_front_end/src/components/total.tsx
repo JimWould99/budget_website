@@ -37,7 +37,7 @@ const TotalBudget = () => {
   return (
     <>
       {user && (
-        <div className="border-2 border-black p-4 flex flex-col gap-y-6 mb-40">
+        <div className="bg-white shadow-2xl border-2 border-black p-4 flex flex-col gap-y-6 ">
           <div className="flex justify-between">
             <p className="text-xl">{format(new Date(), "MMMM")} Total</p>
             <p className="text-xl">

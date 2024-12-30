@@ -82,17 +82,17 @@ const Main_page = () => {
   return (
     <>
       <Header></Header>
-      <div className="flex  flex-col items-center mt-10 gap-y-6">
-        <div className="flex justify-between content-center items-center gap-4 w-5/6">
-          <div className="flex gap-4 ">
+      <div className="flex flex-col items-center pt-10 gap-y-6 bg-violet-100 min-h-[100vh]">
+        <div className="flex flex-col md:flex-row w-5/6 justify-between md:content-center md:items-center gap-4 ">
+          <div className="flex flex-row justify-between md:justify-normal md:gap-4 ">
             <button
-              className="hover:bg-blue-900 hover:text-white text-black py-2 px-4 rounded text-nowrap border-2 border-black hover:border-white"
+              className="bg-white shadow-2xl hover:bg-blue-900  hover:text-white text-black py-2 px-4 rounded text-nowrap border-2 border-black hover:border-white"
               onClick={() => addBudgetButton()}
             >
               Add budget
             </button>
             <button
-              className="hover:bg-blue-900 hover:text-white text-black py-2 px-4 rounded text-nowrap border-2 border-black hover:border-white"
+              className="bg-white shadow-xl hover:bg-blue-900 hover:text-white text-black py-2 px-4 rounded text-nowrap border-2 border-black hover:border-white"
               onClick={() => {
                 addExpenseButton();
               }}
@@ -107,14 +107,14 @@ const Main_page = () => {
           )}
           {user && <p className="text-xl">{day}</p>}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-4 gap-y-10  w-5/6">
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-4 gap-y-10 w-5/6">
           {budgets &&
             budgets.length > 0 &&
             budgets.map((budget, index) => (
               <Budget_display key={index} budget={budget}></Budget_display>
             ))}
         </div>
-        <div className="w-5/6">
+        <div className="w-5/6 mb-10">
           <TotalBudget></TotalBudget>
         </div>
       </div>

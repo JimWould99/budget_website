@@ -55,8 +55,8 @@ const Sign_up_Page = () => {
   return (
     <>
       <Header></Header>
-      <div className="flex justify-center">
-        <div className="w-1/3">
+      <div className="flex justify-center bg-violet-100 min-h-[100vh]">
+        <div className="w-5/6 sm:w-[500px]">
           <p className="mt-5 mb-5 text-2xl">Create Account</p>
           <form
             action=""
@@ -68,7 +68,7 @@ const Sign_up_Page = () => {
               name="email"
               onChange={(e) => setEmail(e.target.value)}
               id="email"
-              className="border border-black h-10 pl-4"
+              className="rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-none border border-black h-10 pl-4 w-full"
               placeholder="email"
             />
             <div className="flex gap-4 items-center">
@@ -77,7 +77,7 @@ const Sign_up_Page = () => {
                 name="password"
                 onChange={(e) => setPassword(e.target.value)}
                 id="password"
-                className="border border-black h-10 w-full pl-4"
+                className="rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-none border border-black h-10 pl-4 w-full"
                 placeholder="password"
               />
               {showPass === "password" && (
@@ -120,7 +120,7 @@ const Sign_up_Page = () => {
                 </svg>
               )}
             </div>
-            <button className="hover:bg-blue-900 hover:text-white text-black py-2 px-4 rounded text-nowrap border-2 border-black hover:border-white w-1/2 text-lg">
+            <button className="bg-white rounded-lg hover:bg-blue-900 hover:text-white text-black py-2 px-4 rounded text-nowrap border-2 border-black hover:border-white w-1/2 text-lg">
               Sign up
             </button>
             <p className="text-lg text-red-500">{error}</p>
