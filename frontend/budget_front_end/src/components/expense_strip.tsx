@@ -1,18 +1,32 @@
 import { BudgetsContext } from "../context/budgets_context";
 import { AuthContext } from "../context/auth_context";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
-const Expense_strip = ({ expense }) => {
+interface Expense {
+  amount: number;
+  budgetId: string;
+  createdAt: string;
+  id: string;
+  name: string;
+  recurring: boolean;
+  userId: string;
+}
+
+const Expense_strip = ({ expense }: { expense: Expense }) => {
   const { user } = useContext(AuthContext);
   //const { updateExpense, deleteExpense } = useContext(BudgetsContext);
-  const { dispatch } = useContext(BudgetsContext);
+  const budgetsContext = useContext(BudgetsContext);
+  if (!budgetsContext) {
+    throw new Error("BudgetsContext is undefined");
+  }
+  const { dispatch } = budgetsContext;
 
-  const [newAmount, setNewAmount] = useState<string>(expense.amount);
+  const [newAmount, setNewAmount] = useState<number>(expense.amount);
   const [recurring, setRecurring] = useState<boolean>(expense.recurring);
 
-  const editExpense = async (amount: string, newRecurring: boolean) => {
+  const editExpense = async (amount: number, newRecurring: boolean) => {
     if (amount === undefined) {
-      setNewAmount("0");
+      setNewAmount(0);
     } else {
       setNewAmount(amount);
     }
@@ -24,7 +38,7 @@ const Expense_strip = ({ expense }) => {
     const request_details = {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${user.token}`,
+        Authorization: `Bearer ${user?.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -53,7 +67,7 @@ const Expense_strip = ({ expense }) => {
     const options = {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${user.token}`,
+        Authorization: `Bearer ${user?.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ expenseId }),
@@ -89,7 +103,7 @@ const Expense_strip = ({ expense }) => {
         <div className="flex gap-2 justify-end ">
           <p className="text-xl">$</p>
           <input
-            onChange={(e) => editExpense(e.target.value, recurring)}
+            onChange={(e) => editExpense(Number(e.target.value), recurring)}
             className="text-xl w-2/5"
             type="number"
             value={newAmount}

@@ -1,10 +1,10 @@
 import { BudgetsContext } from "../context/budgets_context";
 import { AuthContext } from "../context/auth_context";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { format } from "date-fns";
 
 const TotalBudget = () => {
-  const { budgets, expenses, dispatch } = useContext(BudgetsContext);
+  const { budgets = [], expenses = [] } = useContext(BudgetsContext) || {};
   const { user } = useContext(AuthContext);
   let budget_total = 0;
   let expense_total = 0;

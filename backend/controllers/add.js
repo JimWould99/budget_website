@@ -16,7 +16,7 @@ exports.add_budget = async (req, res) => {
       userId: id,
     },
   });
-  // console.log(new_budget);
+  console.log(new_budget);
   res.json({ mssg: new_budget });
 };
 

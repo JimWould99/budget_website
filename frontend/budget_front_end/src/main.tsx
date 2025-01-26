@@ -1,15 +1,9 @@
 import React from "react";
-import { useContext } from "react";
 import ReactDOM from "react-dom/client";
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { AuthContextProvider, AuthContext } from "./context/auth_context.jsx";
-import {
-  BudgetsContextProvider,
-  BudgetsContext,
-} from "./context/budgets_context.js";
+import { AuthContextProvider } from "./context/auth_context.jsx";
+import { BudgetsContextProvider } from "./context/budgets_context.js";
 
 import Main_page from "./pages/main_page";
 import Login_page from "./pages/login_page";

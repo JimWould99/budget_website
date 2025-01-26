@@ -3,16 +3,17 @@ import { AuthContext } from "../context/auth_context";
 import { BudgetsContext } from "../context/budgets_context";
 
 const Add_budget_modal = () => {
-  const { user, login, logout } = useContext(AuthContext);
-  const { budgets, expenses, dispatch } = useContext(BudgetsContext);
+  const { user } = useContext(AuthContext);
+  const budgetsContext = useContext(BudgetsContext);
+  const dispatch = budgetsContext ? budgetsContext.dispatch : () => {};
 
   const [errorColor, setErrorColor] = useState<string>("mt-2 text-white");
-  const [loading, setLoading] = useState<boolean | null>(false);
+  //const [loading, setLoading] = useState<boolean>(false);
 
   const [name, setName] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (name === "" || amount === "") {
@@ -23,7 +24,7 @@ const Add_budget_modal = () => {
     const request_details = {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${user.token}`,
+        Authorization: `Bearer ${user?.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ name, amount }),
@@ -36,15 +37,18 @@ const Add_budget_modal = () => {
 
     console.log("budget json", json);
     if (!response.ok) {
-      setLoading(false);
-      setError(json.error);
+      //setLoading(false);
+      //   setError(json.error);
     }
 
     if (response.ok) {
       setName("");
       setAmount("");
       dispatch({ type: "addNewBudget", payload: json.mssg });
-      document.getElementById("my_modal_2").close();
+      const modal = document.getElementById("my_modal_2") as HTMLDialogElement;
+      if (modal) {
+        modal.close();
+      }
     }
   };
   return (

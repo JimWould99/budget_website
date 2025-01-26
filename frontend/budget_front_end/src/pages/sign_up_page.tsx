@@ -1,18 +1,18 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/auth_context";
 import Header from "../components/header";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const Sign_up_Page = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [confirm, setConfirm] = useState<string>("");
+  //const [confirm, setConfirm] = useState<string>("");
   const [showPass, setShowPass] = useState<string>("password");
   const [error, setError] = useState<boolean | null>(null);
-  const [loading, setLoading] = useState<boolean | null>(false);
-  const { user, login, logout } = useContext(AuthContext);
+  // const [loading, setLoading] = useState<boolean | null>(false);
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
   const sign_up_request = async () => {
-    setLoading(true);
+    // setLoading(true);
     setError(null);
     const request_details = {
       method: "POST",
@@ -20,31 +20,31 @@ const Sign_up_Page = () => {
       body: JSON.stringify({ email, password }),
     };
     const response = await fetch(
-      `http://localhost:3005/users/add_user`,
+      `${import.meta.env.VITE_REACT_APP_URL}/users/add_user`,
       request_details
     );
     const json = await response.json();
     console.log("json", json);
     if (!response.ok) {
       console.log(json.error);
-      setLoading(false);
+      //setLoading(false);
       setError(json.error);
     }
     if (response.ok) {
       console.log("response okay?");
       localStorage.setItem("user", JSON.stringify(json));
       login(json);
-      setLoading(false);
+      //setLoading(false);
       navigate("/");
     }
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     sign_up_request();
   };
-  const handleButtonSubmit = async () => {
+  /*const handleButtonSubmit = async () => {
     sign_up_request();
-  };
+  };*/
   const eyeClick = async () => {
     if (showPass === "password") {
       setShowPass("text");

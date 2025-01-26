@@ -1,22 +1,29 @@
 import { createContext, useEffect, useState, ReactNode } from "react";
 
+type User = {
+  email: string;
+  token: string;
+};
+
+type AuthContextProps = {
+  user: User | null;
+  login: (user: User) => void;
+  logout: () => void;
+};
+
 type AuthContextProviderProps = {
   children: ReactNode;
 };
 
-type AuthContext = {
-  user: object | null;
-  login: (token: string) => void;
-  logout: () => void;
-};
-
-export const AuthContext = createContext({} as AuthContext);
+export const AuthContext = createContext<AuthContextProps>(
+  {} as AuthContextProps
+);
 
 export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
-  const [user, setUser] = useState<object | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
-  function login(token: string) {
-    setUser(token);
+  function login(user: User) {
+    setUser(user);
   }
 
   function logout() {
@@ -25,7 +32,9 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   }
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user") as string)
+      : null;
     if (user) {
       login(user);
     }

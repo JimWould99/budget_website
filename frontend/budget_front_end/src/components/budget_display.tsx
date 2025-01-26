@@ -1,17 +1,37 @@
 import Add_expense_model from "./add_expense_model";
 import View_expenses_model from "./view_expenses_model";
 import { BudgetsContext } from "../context/budgets_context";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { formatRelative } from "date-fns";
-const Budget_display = ({ budget }) => {
+
+interface Budget {
+  amount: number;
+  createdAt: string;
+  id: string;
+  name: string;
+  userId: string;
+}
+
+interface Expense {
+  amount: number;
+  budgetId: string;
+  createdAt: string;
+  id: string;
+  name: string;
+  recurring: boolean;
+  userId: string;
+}
+
+const Budget_display = ({ budget }: { budget: Budget }) => {
   const name = budget.name;
   const amount = budget.amount;
-  let expense_amount;
-  let specificExpenses;
+  let expense_amount = 0;
+  let specificExpenses: Expense[] = [];
   //const [expense_amount, setExpense_amount] = useState<number>(0);
   let barDisplay;
 
-  const { dispatch, expenses } = useContext(BudgetsContext);
+  const context = useContext(BudgetsContext);
+  const expenses = context ? context.expenses : [];
 
   if (expenses) {
     specificExpenses = expenses.filter(
@@ -23,27 +43,26 @@ const Budget_display = ({ budget }) => {
     }, 0);
   }
 
-  /*
-  useEffect(() => {
-    if (dispatch({ type: "displayExpenses", payload: budget.id })) {
-      const expenses = dispatch({
-        type: "displayExpenses",
-        payload: budget.id,
-      });
-      const amount = expenses.reduce((total, expense) => {
-        return total + expense.amount;
-      }, 0);
-      setExpense_amount(amount);
-    }
-    console.log("test");
-  }, [budget.id]); */
-
   if (amount / expense_amount <= 1.33333 && amount / expense_amount >= 1) {
     barDisplay = "progress progress-warning w-full h-3.5";
   } else if (amount > expense_amount) {
     barDisplay = "progress progress-primary w-full h-3.5";
   } else {
     barDisplay = "progress progress-error w-full h-3.5";
+  }
+
+  function expenseClick() {
+    const expenseModal = document.getElementById(`${budget.id}:expense`);
+    if (expenseModal) {
+      (expenseModal as HTMLDialogElement).showModal();
+    }
+  }
+
+  function budgetClick() {
+    const budgetModal = document.getElementById(budget.id);
+    if (budgetModal) {
+      (budgetModal as HTMLDialogElement).showModal();
+    }
   }
 
   return (
@@ -67,15 +86,13 @@ const Budget_display = ({ budget }) => {
         </div>
         <div className="flex justify-between gap-4">
           <button
-            onClick={() =>
-              document.getElementById(`${budget.id}:expense`).showModal()
-            }
+            onClick={() => expenseClick()}
             className="hover:bg-blue-900 hover:text-white text-black py-2 px-4 rounded text-nowrap border-2 border-black hover:border-white"
           >
             Add expense
           </button>
           <button
-            onClick={() => document.getElementById(budget.id).showModal()}
+            onClick={() => budgetClick()}
             className="hover:bg-blue-900 hover:text-white text-black py-2 px-4 rounded text-nowrap border-2 border-black hover:border-white"
           >
             View expenses
