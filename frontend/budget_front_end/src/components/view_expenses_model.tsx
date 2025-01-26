@@ -1,9 +1,38 @@
 import { BudgetsContext } from "../context/budgets_context";
 import { AuthContext } from "../context/auth_context";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import Expense_strip from "./expense_strip";
-const View_expenses_model = ({ budget, specificExpenses }) => {
-  const { dispatch } = useContext(BudgetsContext);
+
+interface Expense {
+  amount: number;
+  budgetId: string;
+  createdAt: string;
+  id: string;
+  name: string;
+  recurring: boolean;
+  userId: string;
+}
+
+interface Budget {
+  amount: number;
+  createdAt: string;
+  id: string;
+  name: string;
+  userId: string;
+}
+
+const View_expenses_model = ({
+  budget,
+  specificExpenses,
+}: {
+  budget: Budget;
+  specificExpenses: Expense[];
+}) => {
+  const budgetsContext = useContext(BudgetsContext);
+  if (!budgetsContext) {
+    throw new Error("BudgetsContext is undefined");
+  }
+  const { dispatch } = budgetsContext;
 
   const { user } = useContext(AuthContext);
   //const expenses = dispatch({ type: "displayExpenses", payload: budget.id });
@@ -11,7 +40,7 @@ const View_expenses_model = ({ budget, specificExpenses }) => {
     const options = {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${user.token}`,
+        Authorization: `Bearer ${user?.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ budgetId: budget.id }),
@@ -44,7 +73,11 @@ const View_expenses_model = ({ budget, specificExpenses }) => {
           </div>
           {specificExpenses &&
             specificExpenses
-              .sort((a, b) => a.createdAt - b.createdAt)
+              .sort(
+                (a, b) =>
+                  new Date(a.createdAt).getTime() -
+                  new Date(b.createdAt).getTime()
+              )
               .map((expense) => (
                 <Expense_strip
                   key={expense.id}

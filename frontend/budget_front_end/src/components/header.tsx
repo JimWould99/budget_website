@@ -1,6 +1,5 @@
-import { useEffect, useState, useContext } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../context/auth_context";
-import { isButtonElement } from "react-router-dom/dist/dom";
 import { Link } from "react-router-dom";
 
 const Header = () => {

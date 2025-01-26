@@ -1,25 +1,34 @@
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/auth_context";
 import { BudgetsContext } from "../context/budgets_context";
-import { json } from "react-router-dom";
 
-const Add_expense_model = ({ budgetSelected }) => {
-  const { user, login, logout } = useContext(AuthContext);
-  const { dispatch, budgets, expenses } = useContext(BudgetsContext);
+interface Budget {
+  amount: number;
+  createdAt: string;
+  id: string;
+  name: string;
+  userId: string;
+}
+
+const Add_expense_model = ({ budgetSelected }: { budgetSelected: Budget }) => {
+  const { user } = useContext(AuthContext);
+  const budgetsContext = useContext(BudgetsContext);
+  const dispatch = budgetsContext?.dispatch;
+  const budgets = budgetsContext?.budgets;
 
   const [errorColor, setErrorColor] = useState<string>("text-white");
-  const [loading, setLoading] = useState<boolean | null>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
 
   const [name, setName] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [budgetCat, setBudgetCat] = useState<string>(budgetSelected.id);
-  const [recurring, setRecurring] = useState<Boolean>(false);
+  const [recurring, setRecurring] = useState<boolean>(false);
 
   useEffect(() => {
     setBudgetCat(budgetSelected.id);
   }, [budgetSelected]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (name === "" || amount === "" || budgetCat === "") {
@@ -30,7 +39,7 @@ const Add_expense_model = ({ budgetSelected }) => {
     const request_details = {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${user.token}`,
+        Authorization: `Bearer ${user?.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -48,8 +57,8 @@ const Add_expense_model = ({ budgetSelected }) => {
     const json = await response.json();
 
     if (!response.ok) {
-      setLoading(false);
-      setError(json.error);
+      // setLoading(false);
+      //setError(json.error);
     }
 
     if (response.ok) {
@@ -58,8 +67,13 @@ const Add_expense_model = ({ budgetSelected }) => {
       setRecurring(false);
       setBudgetCat(budgetSelected.id);
       //addNewExpense(json);
-      dispatch({ type: "addNewExpense", payload: json });
-      document.getElementById(expense_id).close();
+      if (dispatch) {
+        dispatch({ type: "addNewExpense", payload: json });
+      }
+      const dialog = document.getElementById(expense_id);
+      if (dialog) {
+        (dialog as HTMLDialogElement).close();
+      }
     }
   };
 

@@ -5,19 +5,21 @@ import { BudgetsContext } from "../context/budgets_context";
 import Header from "../components/header";
 import Budget_display from "../components/budget_display";
 import Add_budget_modal from "../components/add_budget_modal";
-import Add_expense_model from "../components/add_expense_model";
 import TotalBudget from "../components/total";
 const Main_page = () => {
-  const { user, login, logout } = useContext(AuthContext);
-  const { budgets, expenses, dispatch } = useContext(BudgetsContext);
+  const { user } = useContext(AuthContext);
+  const budgetsContext = useContext(BudgetsContext);
+  const budgets = budgetsContext?.budgets;
+  const dispatch = budgetsContext?.dispatch;
   //console.log("budgets context", budgets);
   const [noAccount, setNoAccount] = useState<boolean>(false);
   useEffect(() => {
+    console.log("user", user);
     const fetchBudgets = async () => {
       const options = {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${user?.token}`,
           "Content-Type": "application/json",
         },
       };
@@ -28,7 +30,9 @@ const Main_page = () => {
       const json = await response.json();
       //console.log("budgets json", json.budgets);
       if (response.ok) {
-        dispatch({ type: "setBudgets", payload: json.budgets });
+        if (dispatch) {
+          dispatch({ type: "setBudgets", payload: json.budgets });
+        }
       }
     };
     if (user) {
@@ -41,7 +45,7 @@ const Main_page = () => {
       const options = {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${user?.token}`,
           "Content-Type": "application/json",
         },
       };
@@ -51,7 +55,9 @@ const Main_page = () => {
       );
       const json = await response.json();
       if (response.ok) {
-        dispatch({ type: "setExpenses", payload: json.mssg });
+        if (dispatch) {
+          dispatch({ type: "setExpenses", payload: json.mssg });
+        }
       }
     };
     if (user) {
@@ -65,17 +71,25 @@ const Main_page = () => {
       return;
     }
     setNoAccount(false);
-    document.getElementById("my_modal_2").showModal();
+    const modal = document.getElementById("my_modal_2");
+    if (modal) {
+      (modal as HTMLDialogElement).showModal();
+    }
   };
   const addExpenseButton = () => {
     if (!user) {
       setNoAccount(true);
       return;
     }
-    if (budgets.length === 0) {
-    }
+    /*if (budgets?.length === 0) {
+    }*/
     setNoAccount(false);
-    document.getElementById(`${budgets[0].id}:expense`).showModal();
+    if (budgets && budgets.length > 0) {
+      const modal = document.getElementById(`${budgets[0].id}:expense`);
+      if (modal) {
+        (modal as HTMLDialogElement).showModal();
+      }
+    }
   };
   const day = format(new Date(), "do 'of' MMMM");
 

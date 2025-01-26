@@ -1,22 +1,22 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/auth_context";
 import Header from "../components/header";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Login_page = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   const [error, setError] = useState<boolean | null>(null);
-  const [loading, setLoading] = useState<boolean | null>(false);
-  const { user, login, logout } = useContext(AuthContext);
+  // const [loading, setLoading] = useState<boolean | null>(false);
+  const { login } = useContext(AuthContext);
 
   const [showPass, setShowPass] = useState<string>("password");
 
   const navigate = useNavigate();
 
   const login_request = async () => {
-    setLoading(true);
+    //setLoading(true);
     setError(null);
 
     const request_details = {
@@ -25,33 +25,33 @@ const Login_page = () => {
       body: JSON.stringify({ email, password }),
     };
     const response = await fetch(
-      `http://localhost:3005/users/login_user`,
+      `${import.meta.env.VITE_REACT_APP_URL}/users/login_user`,
       request_details
     );
 
     const json = await response.json();
 
     if (!response.ok) {
-      setLoading(false);
+      // setLoading(false);
       setError(json.error);
     }
 
     if (response.ok) {
       localStorage.setItem("user", JSON.stringify(json));
       login(json);
-      setLoading(false);
+      // setLoading(false);
       navigate("/");
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     login_request();
   };
 
-  const handleButtonSubmit = async () => {
+  /*const handleButtonSubmit = async () => {
     login_request();
-  };
+  };*/
 
   const eyeClick = async () => {
     if (showPass === "password") {
