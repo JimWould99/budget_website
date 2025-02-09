@@ -3,6 +3,8 @@ const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require("uuid");
+
 require("dotenv").config();
 const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: "1d" });
@@ -46,6 +48,88 @@ exports.add_user = async (req, res) => {
     data: {
       email,
       password: hash,
+    },
+  });
+  let rent_id = `default_rent_${uuidv4()}`;
+  let groceries_id = `default_groceries_${uuidv4()}`;
+  let utilities_id = `default_utilities_${uuidv4()}`;
+  await prisma.budget.create({
+    data: {
+      id: rent_id,
+      name: "Rent",
+      amount: 950,
+      userId: new_user.id,
+    },
+  });
+  await prisma.expense.create({
+    data: {
+      name: "current rent",
+      amount: 800,
+      recurring: true,
+      budgetId: rent_id,
+      userId: new_user.id,
+    },
+  });
+
+  await prisma.budget.create({
+    data: {
+      id: groceries_id,
+      name: "Groceries",
+      amount: 450,
+      userId: new_user.id,
+    },
+  });
+  await prisma.expense.create({
+    data: {
+      name: "pantry staples ei.milk, eggs, bread",
+      amount: 40,
+      recurring: true,
+      budgetId: groceries_id,
+      userId: new_user.id,
+    },
+  });
+  await prisma.expense.create({
+    data: {
+      name: "meat",
+      amount: 80,
+      recurring: true,
+      budgetId: groceries_id,
+      userId: new_user.id,
+    },
+  });
+  await prisma.budget.create({
+    data: {
+      id: utilities_id,
+      name: "Utilies",
+      amount: 250,
+      userId: new_user.id,
+    },
+  });
+  await prisma.expense.create({
+    data: {
+      name: "water",
+      amount: 50,
+      recurring: true,
+      budgetId: utilities_id,
+      userId: new_user.id,
+    },
+  });
+  await prisma.expense.create({
+    data: {
+      name: "gas",
+      amount: 100,
+      recurring: true,
+      budgetId: utilities_id,
+      userId: new_user.id,
+    },
+  });
+  await prisma.expense.create({
+    data: {
+      name: "water",
+      amount: 50,
+      recurring: true,
+      budgetId: utilities_id,
+      userId: new_user.id,
     },
   });
   const token = createToken(new_user.id);

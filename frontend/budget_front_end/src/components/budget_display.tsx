@@ -82,7 +82,11 @@ const Budget_display = ({ budget }: { budget: Budget }) => {
           ></progress>
         </div>
         <div>
-          <p>{formatRelative(budget.createdAt, new Date())}</p>
+          {budget.id.slice(0, 7) !== "default" ? (
+            <p>{formatRelative(budget.createdAt, new Date())}</p>
+          ) : (
+            <p>Default budget</p>
+          )}
         </div>
         <div className="flex justify-between gap-4">
           <button

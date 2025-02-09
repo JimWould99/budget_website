@@ -63,7 +63,7 @@ const View_expenses_model = ({
           <div className="flex mb-5 items-center justify-between">
             <p className="text-2xl font-semibold">{budget.name} expenses</p>
             <p
-              className="border-solid border-2 border-red-500 p-2 text-red-700 hover:cursor-pointer"
+              className="btn btn-error text-white btn-sm"
               onClick={() => {
                 deleteBudgetClick();
               }}

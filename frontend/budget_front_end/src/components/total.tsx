@@ -29,7 +29,7 @@ const TotalBudget = () => {
   ) {
     barDisplay = "progress progress-warning w-full h-3.5";
   } else if (budget_total > expense_total) {
-    barDisplay = "progress progress-primary w-full h-3.5";
+    barDisplay = "progress progress-primary  w-full h-3.5";
   } else {
     barDisplay = "progress progress-error w-full h-3.5";
   }

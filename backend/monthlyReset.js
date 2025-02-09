@@ -1,6 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-
 exports.checkMonthDifference = async () => {
   let lastDate = await prisma.lastChecked.findMany({});
   lastDate = lastDate[0].date;
@@ -25,7 +24,6 @@ exports.checkMonthDifference = async () => {
     },
   });
 };
-
 const monthlyReset = async () => {
   const updatedExpenses = await prisma.expense.updateMany({
     where: {

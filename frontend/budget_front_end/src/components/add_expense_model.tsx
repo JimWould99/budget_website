@@ -95,7 +95,7 @@ const Add_expense_model = ({ budgetSelected }: { budgetSelected: Budget }) => {
                 type="text"
                 name="name"
                 id="name"
-                className="border border-black h-10 w-full pl-4"
+                className="border border-black rounded-md h-10 w-full pl-4"
                 onChange={(e) => setName(e.target.value)}
                 value={name}
               />
@@ -106,7 +106,7 @@ const Add_expense_model = ({ budgetSelected }: { budgetSelected: Budget }) => {
                 type="number"
                 name="amount"
                 id="amount"
-                className="border border-black h-10 w-full pl-4"
+                className="border border-black rounded-md h-10 w-full pl-4"
                 onChange={(e) => setAmount(e.target.value)}
                 value={amount}
               />
@@ -114,7 +114,7 @@ const Add_expense_model = ({ budgetSelected }: { budgetSelected: Budget }) => {
             <div>
               <p>Budget</p>
               <select
-                className="border border-black h-10 w-full"
+                className="border border-black rounded-md h-10 w-full"
                 name="budget"
                 id="budget"
                 onChange={(e) => setBudgetCat(e.target.value)}
@@ -131,7 +131,7 @@ const Add_expense_model = ({ budgetSelected }: { budgetSelected: Budget }) => {
             <div className="flex items-center gap-10">
               <input
                 type="checkbox"
-                className="toggle toggle-info"
+                className="toggle toggle-primary "
                 checked={recurring}
                 onChange={(e) => {
                   setRecurring(e.target.checked);
@@ -140,12 +140,14 @@ const Add_expense_model = ({ budgetSelected }: { budgetSelected: Budget }) => {
               {!recurring && <p>Non-recurring expense (reset each month)</p>}
               {recurring && <p>Recurring expense </p>}
             </div>
-            <button
-              type="submit"
-              className="bg-blue-900 text-white py-2 px-4 rounded text-nowrap hover:bg-white hover:text-black hover:drop-shadow-2xl w-1/3"
-            >
-              Add expense
-            </button>
+            <div>
+              <button
+                type="submit"
+                className="btn btn-primary text-lg shadow-lg text-white"
+              >
+                Add expense
+              </button>
+            </div>
             <p className={errorColor}>Please fill all categories</p>
           </form>
         </div>

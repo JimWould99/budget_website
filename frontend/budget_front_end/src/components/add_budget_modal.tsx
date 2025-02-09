@@ -67,7 +67,7 @@ const Add_budget_modal = () => {
                 type="text"
                 name="name"
                 id="name"
-                className="border border-black h-10 w-full pl-4"
+                className="border rounded-md border-black h-10 w-full pl-4"
                 onChange={(e) => setName(e.target.value)}
                 value={name}
               />
@@ -78,17 +78,19 @@ const Add_budget_modal = () => {
                 type="number"
                 name="amount"
                 id="amount"
-                className="border border-black h-10 w-full pl-4"
+                className="border rounded-md border-black h-10 w-full pl-4"
                 onChange={(e) => setAmount(e.target.value)}
                 value={amount}
               />
             </div>
-            <button
-              type="submit"
-              className="bg-blue-900 text-white py-2 px-4 rounded text-nowrap hover:bg-white hover:text-black hover:drop-shadow-2xl w-1/3"
-            >
-              Add budget
-            </button>
+            <div>
+              <button
+                type="submit"
+                className="btn btn-primary text-lg shadow-lg text-white"
+              >
+                Add budget
+              </button>
+            </div>
           </form>
           <p className={errorColor}>Please fill all categories</p>
         </div>
