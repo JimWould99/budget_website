@@ -26,7 +26,7 @@ const Expense_strip = ({ expense }: { expense: Expense }) => {
   const [recurring, setRecurring] = useState<boolean>(expense.recurring);
 
   const useWindowSize = useScreenWidth();
-  console.log("useWindowSize width", useWindowSize.width);
+  //console.log("useWindowSize width", useWindowSize.width);
 
   const truncateText = ({ text }: { text: string }) => {
     if (text.length <= 10 && useWindowSize.width >= 640) {

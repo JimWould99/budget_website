@@ -2,17 +2,24 @@ import { useEffect, useState, useContext } from "react";
 import { format } from "date-fns";
 import { AuthContext } from "../context/auth_context";
 import { BudgetsContext } from "../context/budgets_context";
+import { SidebarContext } from "../context/sidebar_context";
 import Header from "../components/header";
 import Budget_display from "../components/budget_display";
 import Add_budget_modal from "../components/add_budget_modal";
 import TotalBudget from "../components/total";
+import Sidebar from "../components/sidebar";
+//import useScreenWidth from "../hooks/useScreenWidth";
+
 const Main_page = () => {
   const { user } = useContext(AuthContext);
   const budgetsContext = useContext(BudgetsContext);
+  const { setSideBarShown, renderSidebar, showContent } =
+    useContext(SidebarContext);
   const budgets = budgetsContext?.budgets;
   const dispatch = budgetsContext?.dispatch;
   //console.log("budgets context", budgets);
   const [noAccount, setNoAccount] = useState<boolean>(false);
+
   useEffect(() => {
     console.log("user", user);
     const fetchBudgets = async () => {
@@ -40,6 +47,7 @@ const Main_page = () => {
     }
     console.log("render");
   }, [user, dispatch]);
+
   useEffect(() => {
     const fetchExpenses = async () => {
       const options = {
@@ -65,6 +73,7 @@ const Main_page = () => {
     }
     console.log("fetch");
   }, [user, dispatch]);
+
   const addBudgetButton = () => {
     if (!user) {
       setNoAccount(true);
@@ -96,42 +105,58 @@ const Main_page = () => {
   return (
     <>
       <Header></Header>
-      <div className="flex flex-col items-center pt-10 gap-y-6 bg-base-100 min-h-[100vh]">
-        <div className="flex flex-col md:flex-row w-full px-4 sm:px-0 sm:w-5/6 justify-between md:content-center md:items-center gap-4 ">
-          <div className="flex flex-row justify-between md:justify-normal md:gap-4 ">
+      <div className="flex flex-row w-full">
+        {renderSidebar && <Sidebar></Sidebar>}
+        {showContent && (
+          <div className="flex flex-col items-center pt-10 gap-y-6 bg-base-100 w-full ">
+            <div className="flex flex-col md:flex-row w-full px-4 sm:px-24 justify-between md:content-center md:items-center gap-4 ">
+              <div className="flex flex-row justify-between md:justify-normal md:gap-4 ">
+                <button
+                  className="btn btn-secondary text-xl btn-lg shadow-lg"
+                  onClick={() => addBudgetButton()}
+                >
+                  Add budget
+                </button>
+                <button
+                  className="btn btn-secondary text-xl btn-lg shadow-lg"
+                  onClick={() => {
+                    addExpenseButton();
+                  }}
+                >
+                  Add expense
+                </button>
+              </div>
+              {noAccount && (
+                <p className="text-xl text-red-600">
+                  Please login or create an account
+                </p>
+              )}
+              {user && <p className="text-xl">{day}</p>}
+            </div>
+            <div className="sm:px-24 px-4 sm:px-0 w-full">
+              <TotalBudget></TotalBudget>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-4 gap-y-10 sm:px-24 px-4 sm:px-0 w-full mb-10">
+              {budgets &&
+                budgets.length > 0 &&
+                budgets.map((budget, index) => (
+                  <Budget_display key={index} budget={budget}></Budget_display>
+                ))}
+            </div>
+          </div>
+        )}
+        {!showContent && renderSidebar && (
+          <div className="flex flex-col items-center justify-center w-full ">
             <button
-              className="btn btn-secondary text-xl btn-lg shadow-lg"
-              onClick={() => addBudgetButton()}
-            >
-              Add budget
-            </button>
-            <button
-              className="btn btn-secondary text-xl btn-lg shadow-lg"
               onClick={() => {
-                addExpenseButton();
+                setSideBarShown(false);
               }}
+              className="btn bg-gray-400 text-3xl"
             >
-              Add expense
+              X
             </button>
           </div>
-          {noAccount && (
-            <p className="text-xl text-red-600">
-              Please login or create an account
-            </p>
-          )}
-          {user && <p className="text-xl">{day}</p>}
-        </div>
-        <div className="sm:w-5/6 px-4 sm:px-0 w-full">
-          <TotalBudget></TotalBudget>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-4 gap-y-10 sm:w-5/6 px-4 sm:px-0 w-full mb-10">
-          {budgets &&
-            budgets.length > 0 &&
-            budgets.map((budget, index) => (
-              <Budget_display key={index} budget={budget}></Budget_display>
-            ))}
-        </div>
+        )}
       </div>
       <Add_budget_modal></Add_budget_modal>
     </>

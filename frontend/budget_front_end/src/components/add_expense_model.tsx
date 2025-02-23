@@ -70,6 +70,7 @@ const Add_expense_model = ({ budgetSelected }: { budgetSelected: Budget }) => {
       if (dispatch) {
         dispatch({ type: "addNewExpense", payload: json });
       }
+      console.log("new expense", json);
       const dialog = document.getElementById(expense_id);
       if (dialog) {
         (dialog as HTMLDialogElement).close();
