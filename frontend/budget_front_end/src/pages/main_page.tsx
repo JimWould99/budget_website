@@ -8,6 +8,7 @@ import Budget_display from "../components/budget_display";
 import Add_budget_modal from "../components/add_budget_modal";
 import TotalBudget from "../components/total";
 import Sidebar from "../components/sidebar";
+import SetData from "../hooks/setData";
 //import useScreenWidth from "../hooks/useScreenWidth";
 
 const Main_page = () => {
@@ -17,7 +18,6 @@ const Main_page = () => {
     useContext(SidebarContext);
   const budgets = budgetsContext?.budgets;
   const dispatch = budgetsContext?.dispatch;
-  //console.log("budgets context", budgets);
   const [noAccount, setNoAccount] = useState<boolean>(false);
 
   useEffect(() => {
@@ -30,48 +30,28 @@ const Main_page = () => {
           "Content-Type": "application/json",
         },
       };
-      const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_URL}/display_budgets`,
-        options
-      );
-      const json = await response.json();
-      //console.log("budgets json", json.budgets);
-      if (response.ok) {
+      const [budgets_json, expenses_json] = await Promise.all([
+        fetch(
+          `${import.meta.env.VITE_REACT_APP_URL}/display_budgets`,
+          options
+        ).then((res) => res.json()),
+        fetch(
+          `${import.meta.env.VITE_REACT_APP_URL}/display_all_expenses`,
+          options
+        ).then((res) => res.json()),
+      ]);
+
+      console.log("budgets", budgets_json);
+      if (budgets_json && expenses_json) {
         if (dispatch) {
-          dispatch({ type: "setBudgets", payload: json.budgets });
+          dispatch({ type: "setBudgets", payload: budgets_json.budgets });
+          dispatch({ type: "setExpenses", payload: expenses_json.mssg });
         }
       }
     };
     if (user) {
       fetchBudgets();
     }
-    console.log("render");
-  }, [user, dispatch]);
-
-  useEffect(() => {
-    const fetchExpenses = async () => {
-      const options = {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
-          "Content-Type": "application/json",
-        },
-      };
-      const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_URL}/display_all_expenses`,
-        options
-      );
-      const json = await response.json();
-      if (response.ok) {
-        if (dispatch) {
-          dispatch({ type: "setExpenses", payload: json.mssg });
-        }
-      }
-    };
-    if (user) {
-      fetchExpenses();
-    }
-    console.log("fetch");
   }, [user, dispatch]);
 
   const addBudgetButton = () => {

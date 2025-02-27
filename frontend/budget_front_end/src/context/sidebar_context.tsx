@@ -32,13 +32,10 @@ export const SidebarContextProvider = ({
       setShowContent(true);
     }
     if (useWindowSize.width <= 800 && sideBarShown) {
-      console.log("two");
       setShowContent(false);
       setRenderSidebar(true);
     }
     if (useWindowSize.width <= 800 && !sideBarShown) {
-      console.log("three");
-
       setShowContent(true);
       setRenderSidebar(false);
     }

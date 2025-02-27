@@ -1,8 +1,12 @@
 import Header from "../components/header";
 import Sidebar from "../components/sidebar";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { SidebarContext } from "../context/sidebar_context";
+import { BudgetsContext } from "../context/budgets_context";
+
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
+import { json } from "react-router-dom";
+import SetData from "../hooks/setData";
 
 const data = [
   { name: "Group A", value: 400 },
@@ -40,11 +44,31 @@ const renderCustomizedLabel = ({
   );
 };
 
-function getBudgetAmounts() {}
-
 const Analysis_page = () => {
   const { setSideBarShown, renderSidebar, showContent } =
     useContext(SidebarContext);
+
+  const data: { name: string; spentAmount: number; amount: number }[] =
+    SetData();
+  const pieChart: { name: string; value: number }[] = [];
+
+  data.forEach(
+    (budget: { amount: number; name: string; spentAmount: number }) => {
+      const entry: { name: string; value: number } = {
+        name: "",
+        value: 0,
+      };
+      entry["name"] = budget["name"];
+      entry["value"] = budget["spentAmount"];
+      pieChart.push(entry);
+    }
+  );
+  console.log("piechart", pieChart);
+  //const { budgets = [], expenses = [] } = useContext(BudgetsContext) || {};
+
+  // const budgetData = SetData(budgets, expenses);
+
+  //console.log("budget data!", JSON.stringify(budgetData));
 
   return (
     <>

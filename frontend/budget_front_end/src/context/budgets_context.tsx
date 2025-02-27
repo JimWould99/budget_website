@@ -1,4 +1,4 @@
-import { createContext, useReducer, ReactNode } from "react";
+import { createContext, useReducer, ReactNode, useEffect } from "react";
 
 type BudgetsContextProviderProps = {
   children: ReactNode;
@@ -31,6 +31,7 @@ interface BudgetState {
 type Action =
   | { type: "setBudgets"; payload: Budget[] }
   | { type: "setExpenses"; payload: Expense[] }
+  | { type: "returnData"; payload: null }
   | { type: "addNewBudget"; payload: Budget }
   | { type: "addNewExpense"; payload: Expense }
   | { type: "displayExpenses"; payload: string }
@@ -40,6 +41,7 @@ type Action =
 
 interface BudgetsContextType extends BudgetState {
   dispatch: React.Dispatch<Action>;
+  testFunction: () => string;
 }
 
 export const BudgetsContext = createContext<BudgetsContextType | undefined>(
@@ -56,6 +58,9 @@ export const budgetReducer = (
       return { ...state, budgets: action.payload };
     case "setExpenses":
       return { ...state, expenses: action.payload };
+    case "returnData":
+      console.log("state budgets", ...(state.budgets || []));
+      return { ...state, budgets: [...(state.budgets || [])] };
     case "addNewBudget":
       //console.log("state.budgets", state.budgets);
       return {
@@ -127,8 +132,33 @@ export const BudgetsContextProvider = ({
     budgets: null,
     expenses: null,
   });
+
+  useEffect(() => {
+    if (localStorage.getItem("budgets")) {
+      const budgets = localStorage.getItem("budgets");
+      if (budgets) {
+        state.budgets = JSON.parse(budgets);
+      }
+    }
+    if (localStorage.getItem("expenses")) {
+      const expenses = localStorage.getItem("expenses");
+      if (expenses) {
+        state.expenses = JSON.parse(expenses);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("budgets", JSON.stringify(state.budgets));
+    localStorage.setItem("expenses", JSON.stringify(state.expenses));
+  }, [state.budgets, state.expenses]);
+
+  const testFunction = () => {
+    return "test";
+  };
+
   return (
-    <BudgetsContext.Provider value={{ ...state, dispatch }}>
+    <BudgetsContext.Provider value={{ ...state, testFunction, dispatch }}>
       {children}
     </BudgetsContext.Provider>
   );

@@ -1,6 +1,6 @@
 import { BudgetsContext } from "../context/budgets_context";
 import { AuthContext } from "../context/auth_context";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Expense_strip from "./expense_strip";
 
 interface Expense {
@@ -54,7 +54,15 @@ const View_expenses_model = ({
     }
   };
 
-  console.log("specific expenses", specificExpenses);
+  useEffect(() => {
+    let data;
+    if (dispatch) {
+      data = dispatch({
+        type: "displayExpenses",
+        payload: "b4898d90-b49b-4f1a-97fc-d021310ffe13",
+      });
+    }
+  }, [dispatch]);
 
   return (
     <>
