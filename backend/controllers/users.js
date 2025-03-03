@@ -100,7 +100,7 @@ exports.add_user = async (req, res) => {
   await prisma.budget.create({
     data: {
       id: utilities_id,
-      name: "Utilies",
+      name: "Utilities",
       amount: 250,
       userId: new_user.id,
     },

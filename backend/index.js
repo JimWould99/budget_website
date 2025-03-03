@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const cron = require("node-cron");
 const { checkMonthDifference } = require("./monthlyReset");
 
 const app = express();
@@ -14,7 +15,9 @@ app.listen(3005, () => {
   console.log("listing on port 3005");
 });
 
-checkMonthDifference();
+cron.schedule("0 0 1 * *", () => {
+  checkMonthDifference();
+});
 
 app.use("/users", userRouter);
 

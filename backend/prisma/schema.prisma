@@ -47,3 +47,8 @@ model Expense{
   user Users @relation(fields: [userId], references: [id])
   userId String
 }
+
+model DataSnapshot{
+  id String @id @default(uuid())
+  data String 
+}

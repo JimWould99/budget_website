@@ -15,7 +15,16 @@ const data = [
   { name: "Group D", value: 200 },
 ];
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#FF8042",
+  "#e3fd0c",
+  "#0c10fd",
+  "#f800f4",
+];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -63,7 +72,23 @@ const Analysis_page = () => {
       pieChart.push(entry);
     }
   );
-  console.log("piechart", pieChart);
+
+  console.log("data", data);
+
+  const amountBudgeted: { name: string; value: number }[] = [];
+
+  data.forEach(
+    (budget: { amount: number; name: string; spentAmount: number }) => {
+      const entry: { name: string; value: number } = {
+        name: "",
+        value: 0,
+      };
+      entry["name"] = budget["name"];
+      entry["value"] = budget["amount"];
+      amountBudgeted.push(entry);
+    }
+  );
+
   //const { budgets = [], expenses = [] } = useContext(BudgetsContext) || {};
 
   // const budgetData = SetData(budgets, expenses);
@@ -76,35 +101,67 @@ const Analysis_page = () => {
       <div className="flex flex-row w-full">
         {renderSidebar && <Sidebar></Sidebar>}
         {showContent && (
-          <div className="h-96 w-96">
-            <p>Total amount spent on each budget</p>
-            <ResponsiveContainer
-              isAnimationActive={false}
-              width="100%"
-              height="100%"
-            >
-              <PieChart width={400} height={400}>
-                <Pie
-                  data={data}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={renderCustomizedLabel}
-                  // label={({ name }) => name} // Displaying the name
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                  isAnimationActive={false} // Turn off animation
-                >
-                  {data.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
+          <div className="flex h-[30%] mt-12 justify-around w-[100%]">
+            <div className="h-96 w-96 flex flex-col gap-2 justify-center items-center">
+              <p className="text-2xl">Amount Spent</p>
+              <ResponsiveContainer
+                isAnimationActive={false}
+                width="100%"
+                height="60%"
+              >
+                <PieChart width={400} height={400}>
+                  <Pie
+                    data={pieChart}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={true}
+                    // label={renderCustomizedLabel}
+                    label={({ name }) => name} // Displaying the name
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                    isAnimationActive={false} // Turn off animation
+                  >
+                    {pieChart.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="h-96 w-96 flex flex-col gap-2 justify-center items-center">
+              <p className="text-2xl">Amount budgeted</p>
+              <ResponsiveContainer
+                isAnimationActive={false}
+                width="100%"
+                height="60%"
+              >
+                <PieChart width={400} height={400}>
+                  <Pie
+                    data={amountBudgeted}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={true}
+                    // label={renderCustomizedLabel}
+                    label={({ name }) => name} // Displaying the name
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                    isAnimationActive={false} // Turn off animation
+                  >
+                    {pieChart.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         )}
       </div>
