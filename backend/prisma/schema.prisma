@@ -24,6 +24,7 @@ model Users {
   password String
   budgets Budget[]
   expenses Expense[]
+  snapshots DataSnapshot[]
 }
 
 model Budget{
@@ -50,5 +51,9 @@ model Expense{
 
 model DataSnapshot{
   id String @id @default(uuid())
-  data String 
+  createdAt DateTime @default(now())
+  user Users @relation(fields: [userId], references: [id])
+  userId String
+  amoundSpent Int
+  amountBudgeted Int
 }

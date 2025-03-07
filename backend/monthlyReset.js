@@ -1,5 +1,8 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+
+const { backupData } = require("./backup_data");
+
 exports.checkMonthDifference = async () => {
   let lastDate = await prisma.lastChecked.findMany({});
   lastDate = lastDate[0].date;
@@ -8,6 +11,7 @@ exports.checkMonthDifference = async () => {
     (lastDate.getMonth() === 12 && currentDate.getMonth() === 1) ||
     lastDate.getMonth() < currentDate.getMonth()
   ) {
+    backupData();
     monthlyReset();
   } else {
     console.log("same month");

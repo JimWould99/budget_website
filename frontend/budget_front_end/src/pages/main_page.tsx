@@ -50,6 +50,7 @@ const Main_page = () => {
       }
     };
     if (user) {
+      console.log("fetching budgets");
       fetchBudgets();
     }
   }, [user, dispatch]);

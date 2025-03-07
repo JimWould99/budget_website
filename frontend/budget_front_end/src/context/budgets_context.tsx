@@ -136,13 +136,14 @@ export const BudgetsContextProvider = ({
   useEffect(() => {
     if (localStorage.getItem("budgets")) {
       const budgets = localStorage.getItem("budgets");
-      if (budgets) {
+      if (budgets !== undefined && budgets !== null && budgets) {
+        console.log("budgets", budgets);
         state.budgets = JSON.parse(budgets);
       }
     }
-    if (localStorage.getItem("expenses")) {
+    if (localStorage.getItem("expenses") !== undefined) {
       const expenses = localStorage.getItem("expenses");
-      if (expenses) {
+      if (expenses !== undefined && expenses) {
         state.expenses = JSON.parse(expenses);
       }
     }
