@@ -17,12 +17,15 @@ async function main() {
 
   // console.log("deleteExpenses", deleteExpense);
 
-  const date = await prisma.lastChecked.create({
+  let data = await prisma.dataSnapshot.findMany({});
+  console.log("data", data);
+  // note this has to be done when db empty
+  /* const date = await prisma.lastChecked.create({
     data: {
       id: "3b1ac58b-4b33-46f7-8202-53d4898635c1",
       date: new Date(),
     },
-  });
+  });*/
 
   console.log("date", date);
 }

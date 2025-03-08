@@ -22,7 +22,6 @@ cron.schedule("0 0 * * *", () => {
 });
 
 //backupData();
-
 app.use("/users", userRouter);
 
 app.use("/", mainRouter);

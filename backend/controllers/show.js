@@ -53,3 +53,14 @@ exports.display_user = async (req, res) => {
   //console.log(user);
   res.json({ mssg: user });
 };
+
+exports.display_historic = async (req, res) => {
+  const { id } = req.user;
+  const historical = await prisma.dataSnapshot.findMany({
+    where: {
+      userId: id,
+    },
+    orderBy: { createdAt: "asc" },
+  });
+  res.json(historical);
+};

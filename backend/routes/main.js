@@ -18,6 +18,7 @@ router.post("/display_budgets", display_controller.display_budget);
 router.post("/display_expenses", display_controller.display_expense);
 router.post("/display_all_expenses", display_controller.display_expenses);
 router.post("/display_user", display_controller.display_user);
+router.get("/display_historic", display_controller.display_historic);
 //add
 router.post("/add_budget", add_controller.add_budget);
 router.post("/add_expense", add_controller.add_expense);

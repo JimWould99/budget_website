@@ -25,9 +25,10 @@ exports.backupData = async () => {
     const newHistorical = await prisma.dataSnapshot.create({
       data: {
         userId: user.id,
+        amoundSpent: userObject.amountSpend,
+        amountBudgeted: userObject.amountBudgeted,
       },
     });
-    console.log("userobject", userObject);
   });
 
   console.log("test backup");
