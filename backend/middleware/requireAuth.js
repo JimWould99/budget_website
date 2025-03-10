@@ -10,6 +10,9 @@ const requireAuth = async (req, res, next) => {
     return res.status(401).json({ error: "Auth token required" });
   }
   const token = authorization.split(" ")[1];
+  if (token === null) {
+    return res.status(401).json({ error: "Auth token required" });
+  }
   try {
     const { _id } = jwt.verify(token, process.env.JWT_SECRET);
     req.user = await prisma.users.findUnique({
@@ -22,7 +25,7 @@ const requireAuth = async (req, res, next) => {
     });
     next();
   } catch (error) {
-    return res.status(401).json({ error: "req not authorized" });
+    return res.status(403).json({ error: "token expired" });
   }
 };
 

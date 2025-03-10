@@ -54,6 +54,6 @@ model DataSnapshot{
   createdAt DateTime @default(now())
   user Users @relation(fields: [userId], references: [id])
   userId String
-  amoundSpent Int
+  amountSpent Int
   amountBudgeted Int
 }

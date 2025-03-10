@@ -7,11 +7,11 @@ exports.backupData = async () => {
   const allUsers = await prisma.users.findMany({});
   const allBudgets = await prisma.budget.findMany({});
   const allExpenses = await prisma.expense.findMany({});
-  // structure  {userid: id, amountSpend: y, amountBudgeted: x }
-  // array [{userid: id, amountSpend: y, amountBudgeted: x }, {userid: id, amountSpend: y, amountBudgeted: x }]
+  // structure  {userid: id, amountSpent: y, amountBudgeted: x }
+  // array [{userid: id, amountSpent: y, amountBudgeted: x }, {userid: id, amountSpent: y, amountBudgeted: x }]
 
   allUsers.forEach(async (user) => {
-    userObject = { amountBudgeted: 0, amountSpend: 0 };
+    userObject = { amountBudgeted: 0, amountSpent: 0 };
     allBudgets.forEach((budget) => {
       if (budget.userId === user.id) {
         userObject.amountBudgeted += budget.amount;
@@ -19,13 +19,13 @@ exports.backupData = async () => {
     });
     allExpenses.forEach((expense) => {
       if (expense.userId === user.id) {
-        userObject.amountSpend += expense.amount;
+        userObject.amountSpent += expense.amount;
       }
     });
     const newHistorical = await prisma.dataSnapshot.create({
       data: {
         userId: user.id,
-        amoundSpent: userObject.amountSpend,
+        amountSpent: userObject.amountSpent,
         amountBudgeted: userObject.amountBudgeted,
       },
     });

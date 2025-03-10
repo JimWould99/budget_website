@@ -29,6 +29,8 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   function logout() {
     setUser(null);
     localStorage.removeItem("user");
+    localStorage.removeItem("budgets");
+    localStorage.removeItem("expenses");
   }
 
   useEffect(() => {

@@ -72,25 +72,58 @@ const Login_page = () => {
             className="flex flex-col gap-7 "
           >
             <div className=""></div>
-            <input
-              type="text"
-              name="email"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              id="email"
-              className="rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-none border border-black h-10 pl-4 w-full"
-              placeholder="email"
-            />
-            <div className="flex gap-4 items-center">
+            <label className="flex gap-4 items-center  input validator">
+              <svg
+                className="h-[1em] opacity-50"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+              >
+                <g
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                  strokeWidth="2.5"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                </g>
+              </svg>
               <input
-                type={showPass}
-                name="password"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-                id="password"
-                className="rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-none border border-black h-10 pl-4 w-full"
-                placeholder="password"
+                type="text"
+                placeholder="mail@site.com"
+                onChange={(e) => setEmail(e.target.value)}
               />
+            </label>
+            <div className="flex gap-4 items-center">
+              <label className="w-[80%] flex gap-4 items-center input validator">
+                <svg
+                  className="h-[1em] opacity-50"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                >
+                  <g
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
+                    strokeWidth="2.5"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"></path>
+                    <circle
+                      cx="16.5"
+                      cy="7.5"
+                      r=".5"
+                      fill="currentColor"
+                    ></circle>
+                  </g>
+                </svg>
+                <input
+                  type={showPass}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                />
+              </label>
               {showPass === "password" && (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -131,8 +164,11 @@ const Login_page = () => {
                 </svg>
               )}
             </div>
-            <button className="bg-white hover:bg-blue-900 rounded-lg hover:text-white text-black py-2 px-4 rounded text-nowrap border-2 border-black hover:border-white w-1/2 text-lg">
-              Login
+            <button
+              className="btn btn-info btn-md text-xl shadow-lg"
+              type="submit"
+            >
+              Login{" "}
             </button>
             <p className="text-lg text-red-500">{error}</p>
           </form>

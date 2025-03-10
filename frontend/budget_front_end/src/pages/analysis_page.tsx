@@ -21,56 +21,7 @@ import {
 import { json } from "react-router-dom";
 import SetData from "../hooks/setData";
 import { set } from "date-fns";
-const data = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
-];
-/*const lineData = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];*/
+
 const COLORS = [
   "#0088FE",
   "#00C49F",
@@ -108,7 +59,7 @@ const renderCustomizedLabel = ({
 };
 function convertLineData(
   data: {
-    amoundSpent: number;
+    amountSpent: number;
     amountBudgeted: number;
     createdAt: string;
     id: string;
@@ -125,14 +76,13 @@ function convertLineData(
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
       month: "long",
-      day: "numeric",
     };
     const date = new Date(entry.createdAt).toLocaleDateString(
       undefined,
       options
     );
     month["name"] = date;
-    month["Amount spent"] = entry.amoundSpent;
+    month["Amount spent"] = entry.amountSpent;
     month["Amount budgeted"] = entry.amountBudgeted;
     newLineData.push(month);
     console.log("new line data", newLineData);
@@ -141,7 +91,11 @@ function convertLineData(
 }
 const Analysis_page = () => {
   const { user } = useContext(AuthContext);
+
   const [historicData, setHistoricData] = useState([]);
+  const { setSideBarShown, renderSidebar, showContent } =
+    useContext(SidebarContext);
+
   useEffect(() => {
     if (!user) return;
     const options = {
@@ -166,11 +120,13 @@ const Analysis_page = () => {
     };
     fetchHistoricData();
   }, [user]);
-  const { setSideBarShown, renderSidebar, showContent } =
-    useContext(SidebarContext);
+
   const data: { name: string; spentAmount: number; amount: number }[] =
     SetData();
+
+  console.log("data", data);
   const pieChart: { name: string; value: number }[] = [];
+
   data.forEach(
     (budget: { amount: number; name: string; spentAmount: number }) => {
       const entry: { name: string; value: number } = {
@@ -182,7 +138,9 @@ const Analysis_page = () => {
       pieChart.push(entry);
     }
   );
+
   const amountBudgeted: { name: string; value: number }[] = [];
+
   data.forEach(
     (budget: { amount: number; name: string; spentAmount: number }) => {
       const entry: { name: string; value: number } = {
@@ -211,7 +169,6 @@ const Analysis_page = () => {
   ];
   const currentDate = new Date();
   const currentMonth = months[currentDate.getMonth()];
-  console.log("current month", currentMonth);
   return (
     <>
       <Header></Header>

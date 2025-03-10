@@ -4,11 +4,13 @@ const bcrypt = require("bcrypt");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
-
+const { sub } = require("date-fns");
 require("dotenv").config();
+
 const createToken = (_id) => {
-  return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+  return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: "3d" });
 };
+
 const userExists = async (inputEmail) => {
   const exists = await prisma.users.findUnique({
     where: {
@@ -17,6 +19,7 @@ const userExists = async (inputEmail) => {
   });
   return exists;
 };
+
 exports.add_user = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -131,6 +134,66 @@ exports.add_user = async (req, res) => {
       budgetId: utilities_id,
       userId: new_user.id,
     },
+  });
+  let dates = [];
+  for (let i = 0; i < 12; i++) {
+    dates.push(
+      sub(new Date(), {
+        months: i,
+      })
+    );
+  }
+  const historicalDummy = [
+    {
+      userId: new_user.id,
+      amountBudgeted: 1650,
+      amountSpent: 1120,
+    },
+    {
+      userId: new_user.id,
+      amountBudgeted: 1650,
+      amountSpent: 1600,
+    },
+    {
+      userId: new_user.id,
+      amountBudgeted: 1650,
+      amountSpent: 1800,
+    },
+    {
+      userId: new_user.id,
+      amountBudgeted: 1650,
+      amountSpent: 1625,
+    },
+    {
+      userId: new_user.id,
+      amountBudgeted: 2000,
+      amountSpent: 1800,
+    },
+    {
+      userId: new_user.id,
+      amountBudgeted: 2000,
+      amountSpent: 1900,
+    },
+    {
+      userId: new_user.id,
+      amountBudgeted: 2000,
+      amountSpent: 2300,
+    },
+    {
+      userId: new_user.id,
+      amountBudgeted: 2000,
+      amountSpent: 2100,
+    },
+  ];
+  historicalDummy.forEach(async (entry, index) => {
+    await prisma.dataSnapshot.create({
+      data: {
+        userId: entry.userId,
+        amountBudgeted: entry.amountBudgeted,
+        amountSpent: entry.amountSpent,
+        createdAt: dates[index],
+      },
+    });
   });
   const token = createToken(new_user.id);
   res.json({ email, token });

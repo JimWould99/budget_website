@@ -67,7 +67,7 @@ const Budget_display = ({ budget }: { budget: Budget }) => {
 
   return (
     <>
-      <div className="bg-white shadow-2xl border-2 border-black p-4 flex flex-col gap-y-6">
+      <div className="bg-white rounded-md shadow-2xl border-2 border-black p-4 flex flex-col gap-y-6">
         <div className="flex justify-between">
           <p className="text-xl">{name}</p>
           <p className="text-xl">
@@ -91,13 +91,13 @@ const Budget_display = ({ budget }: { budget: Budget }) => {
         <div className="flex justify-between gap-4">
           <button
             onClick={() => expenseClick()}
-            className="hover:bg-blue-900 hover:text-white text-black py-2 px-4 rounded text-nowrap border-2 border-black hover:border-white"
+            className="btn btn-accent btn-md shadow-lg"
           >
             Add expense
           </button>
           <button
             onClick={() => budgetClick()}
-            className="hover:bg-blue-900 hover:text-white text-black py-2 px-4 rounded text-nowrap border-2 border-black hover:border-white"
+            className="btn btn-accent btn-md shadow-lg"
           >
             View expenses
           </button>

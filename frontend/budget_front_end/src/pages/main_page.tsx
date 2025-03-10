@@ -12,7 +12,7 @@ import SetData from "../hooks/setData";
 //import useScreenWidth from "../hooks/useScreenWidth";
 
 const Main_page = () => {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const budgetsContext = useContext(BudgetsContext);
   const { setSideBarShown, renderSidebar, showContent } =
     useContext(SidebarContext);
@@ -21,7 +21,9 @@ const Main_page = () => {
   const [noAccount, setNoAccount] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log("user", user);
+    if (!user) {
+      return;
+    }
     const fetchBudgets = async () => {
       const options = {
         method: "POST",
@@ -31,17 +33,29 @@ const Main_page = () => {
         },
       };
       const [budgets_json, expenses_json] = await Promise.all([
-        fetch(
-          `${import.meta.env.VITE_REACT_APP_URL}/display_budgets`,
-          options
-        ).then((res) => res.json()),
+        fetch(`${import.meta.env.VITE_REACT_APP_URL}/display_budgets`, options)
+          .then((res) => res.json())
+          .catch((error) => {
+            console.log(error);
+            return;
+          }),
         fetch(
           `${import.meta.env.VITE_REACT_APP_URL}/display_all_expenses`,
           options
-        ).then((res) => res.json()),
+        )
+          .then((res) => res.json())
+          .catch((error) => {
+            console.log(error);
+            return;
+          }),
       ]);
 
-      console.log("budgets", budgets_json);
+      if (budgets_json.error) {
+        console.log("expired");
+        logout();
+        return;
+      }
+
       if (budgets_json && expenses_json) {
         if (dispatch) {
           dispatch({ type: "setBudgets", payload: budgets_json.budgets });
@@ -50,7 +64,6 @@ const Main_page = () => {
       }
     };
     if (user) {
-      console.log("fetching budgets");
       fetchBudgets();
     }
   }, [user, dispatch]);

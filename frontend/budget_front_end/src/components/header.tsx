@@ -39,7 +39,9 @@ const Header = () => {
       <div className="position: sticky top-0 z-50 opacity-95 drop-shadow-xl bg-base-300 pb-3 pt-3 sm:p-0 sm:h-20 w-full flex justify-center ">
         <div className="md:pr-24 md:pl-52 sm:pr-24 sm:pl-24 px-4  w-full sm:gap-0 gap-4 flex flex-row sm:ml-0 justify-between sm:justify-between sm:content-center sm:items-center">
           <Link className="hidden sm:block" to="/">
-            <h1 className="text-3xl font-bold ">Budgets</h1>
+            <h1 className="text-3xl font-bold text-primary">
+              BetterBudgets AI
+            </h1>
           </Link>
           <button
             onClick={() => {

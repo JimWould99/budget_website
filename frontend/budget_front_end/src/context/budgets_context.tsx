@@ -59,7 +59,7 @@ export const budgetReducer = (
     case "setExpenses":
       return { ...state, expenses: action.payload };
     case "returnData":
-      console.log("state budgets", ...(state.budgets || []));
+      //   console.log("state budgets", ...(state.budgets || []));
       return { ...state, budgets: [...(state.budgets || [])] };
     case "addNewBudget":
       //console.log("state.budgets", state.budgets);
@@ -129,19 +129,19 @@ export const BudgetsContextProvider = ({
   children,
 }: BudgetsContextProviderProps) => {
   const [state, dispatch] = useReducer(budgetReducer, {
-    budgets: null,
-    expenses: null,
+    budgets: [],
+    expenses: [],
   });
 
   useEffect(() => {
     if (localStorage.getItem("budgets")) {
       const budgets = localStorage.getItem("budgets");
-      if (budgets !== undefined && budgets !== null && budgets) {
-        console.log("budgets", budgets);
-        state.budgets = JSON.parse(budgets);
+      if (budgets !== undefined) {
+        //  console.log("budgets", budgets);
+        state.budgets = budgets ? JSON.parse(budgets) : [];
       }
     }
-    if (localStorage.getItem("expenses") !== undefined) {
+    if (localStorage.getItem("expenses")) {
       const expenses = localStorage.getItem("expenses");
       if (expenses !== undefined && expenses) {
         state.expenses = JSON.parse(expenses);
@@ -150,6 +150,7 @@ export const BudgetsContextProvider = ({
   }, []);
 
   useEffect(() => {
+    //   console.log('console.log("state.budgets", state.budgets);', state.budgets);
     localStorage.setItem("budgets", JSON.stringify(state.budgets));
     localStorage.setItem("expenses", JSON.stringify(state.expenses));
   }, [state.budgets, state.expenses]);
