@@ -176,7 +176,7 @@ const Analysis_page = () => {
         {renderSidebar && <Sidebar></Sidebar>}
         {showContent && (
           <div className="h-full w-full">
-            <div className="w-full mt-8 h-[100vh] md:h-[45vh] flex flex-col gap-8 lg:gap-0 lg:flex-row justify-apart">
+            <div className="w-full  mt-8 h-[100vh] md:h-[45vh] flex flex-col gap-8 lg:gap-0 lg:flex-row justify-apart">
               <div className="w-full h-full flex flex-col gap-y-4 justify-center items-center">
                 <p className="text-2xl">{`${currentMonth}: Amount spent`}</p>
                 <ResponsiveContainer
@@ -239,7 +239,9 @@ const Analysis_page = () => {
               </div>
             </div>
             <div className="lg:mt-20 mt-12 md:mt-80 mb-32 h-[60vh] w-full flex flex-col gap-4 justify-center items-center">
-              <p className="text-2xl">Timeline: Amount spent and budgeted </p>
+              <p className="text-2xl  text-center">
+                Timeline: Amount spent and budgeted{" "}
+              </p>
               <ResponsiveContainer
                 isAnimationActive={false}
                 width="100%"
@@ -273,6 +275,18 @@ const Analysis_page = () => {
                 </LineChart>
               </ResponsiveContainer>
             </div>
+          </div>
+        )}
+        {!showContent && renderSidebar && (
+          <div className="flex flex-col items-center justify-center w-full ">
+            <button
+              onClick={() => {
+                setSideBarShown(false);
+              }}
+              className="btn bg-gray-400 text-3xl"
+            >
+              X
+            </button>
           </div>
         )}
       </div>

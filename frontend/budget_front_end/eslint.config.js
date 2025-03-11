@@ -18,6 +18,7 @@ export default tseslint.config(
       "react-refresh": reactRefresh,
     },
     rules: {
+      "@typescript-eslint/no-explicit-any": "off",
       "react/prop-types": "off",
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": "off",

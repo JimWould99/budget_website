@@ -136,7 +136,7 @@ exports.add_user = async (req, res) => {
     },
   });
   let dates = [];
-  for (let i = 0; i < 12; i++) {
+  for (let i = 1; i < 12; i++) {
     dates.push(
       sub(new Date(), {
         months: i,
@@ -147,7 +147,7 @@ exports.add_user = async (req, res) => {
     {
       userId: new_user.id,
       amountBudgeted: 1650,
-      amountSpent: 1120,
+      amountSpent: 1100,
     },
     {
       userId: new_user.id,
@@ -183,6 +183,16 @@ exports.add_user = async (req, res) => {
       userId: new_user.id,
       amountBudgeted: 2000,
       amountSpent: 2100,
+    },
+    {
+      userId: new_user.id,
+      amountBudgeted: 1500,
+      amountSpent: 1500,
+    },
+    {
+      userId: new_user.id,
+      amountBudgeted: 1500,
+      amountSpent: 1750,
     },
   ];
   historicalDummy.forEach(async (entry, index) => {
