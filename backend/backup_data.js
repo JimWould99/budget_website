@@ -31,5 +31,5 @@ exports.backupData = async () => {
     });
   });
 
-  console.log("test backup");
+  // console.log("test backup");
 };

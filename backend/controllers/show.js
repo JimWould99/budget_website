@@ -68,7 +68,7 @@ exports.display_historic = async (req, res) => {
 };
 
 exports.display_advice = async (req, res) => {
-  console.log("req body", req.body);
+  // console.log("req body", req.body);
   //const { data } = req.body;
   //console.log('data', data)
   const openai = new OpenAI({
