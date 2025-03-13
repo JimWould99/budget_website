@@ -8,7 +8,6 @@ import Budget_display from "../components/budget_display";
 import Add_budget_modal from "../components/add_budget_modal";
 import TotalBudget from "../components/total";
 import Sidebar from "../components/sidebar";
-import SetData from "../hooks/setData";
 //import useScreenWidth from "../hooks/useScreenWidth";
 
 const Main_page = () => {

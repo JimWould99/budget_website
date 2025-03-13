@@ -25,7 +25,7 @@ const Login_page = () => {
       body: JSON.stringify({ email, password }),
     };
     const response = await fetch(
-      `${import.meta.env.VITE_REACT_APP_URL}/users/login_user`,
+      `${import.meta.env.VITE_REACT_APP_URL_USER}/users/login_user`,
       request_details
     );
 

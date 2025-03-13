@@ -1,6 +1,6 @@
 import { BudgetsContext } from "../context/budgets_context";
 import { AuthContext } from "../context/auth_context";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import useScreenWidth from "../hooks/useScreenWidth";
 
 interface Expense {

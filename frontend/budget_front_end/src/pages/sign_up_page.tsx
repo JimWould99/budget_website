@@ -20,7 +20,7 @@ const Sign_up_Page = () => {
       body: JSON.stringify({ email, password }),
     };
     const response = await fetch(
-      `${import.meta.env.VITE_REACT_APP_URL}/users/add_user`,
+      `${import.meta.env.VITE_REACT_APP_URL_USER}/users/add_user`,
       request_details
     );
     const json = await response.json();

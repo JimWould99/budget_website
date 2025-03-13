@@ -32,8 +32,6 @@ interface refinedHistorical {
 
 export function SimplifyData({
   historicData,
-  budgets,
-  expenses,
 }: {
   historicData: historicData[];
   budgets: Expense[];
@@ -51,6 +49,4 @@ export function SimplifyData({
     holder.amountSpend = object.spentAmount;
     refinedHistorical.push(holder);
   });
-
-  return data;
 }

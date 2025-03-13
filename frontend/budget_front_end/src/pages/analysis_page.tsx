@@ -2,12 +2,10 @@ import Header from "../components/header";
 import Sidebar from "../components/sidebar";
 import { useContext, useEffect, useState } from "react";
 import { SidebarContext } from "../context/sidebar_context";
-import { BudgetsContext } from "../context/budgets_context";
 import { AuthContext } from "../context/auth_context";
 import {
   PieChart,
   Pie,
-  Sector,
   Cell,
   ResponsiveContainer,
   LineChart,
@@ -18,9 +16,7 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { json } from "react-router-dom";
 import SetData from "../hooks/setData";
-import { set } from "date-fns";
 
 const COLORS = [
   "#0088FE",
@@ -32,31 +28,7 @@ const COLORS = [
   "#0c10fd",
   "#f800f4",
 ];
-const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = ({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  percent,
-  index,
-}) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-  return (
-    <text
-      x={x}
-      y={y}
-      fill="white"
-      textAnchor={x > cx ? "start" : "end"}
-      dominantBaseline="central"
-    >
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
-  );
-};
+
 function convertLineData(
   data: {
     amountSpent: number;
@@ -179,11 +151,7 @@ const Analysis_page = () => {
             <div className="w-full  mt-8 h-[100vh] md:h-[45vh] flex flex-col gap-8 lg:gap-0 lg:flex-row justify-apart">
               <div className="w-full h-full flex flex-col gap-y-4 justify-center items-center">
                 <p className="text-2xl">{`${currentMonth}: Amount spent`}</p>
-                <ResponsiveContainer
-                  isAnimationActive={false}
-                  width="100%"
-                  height="100%"
-                >
+                <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={pieChart}
@@ -197,7 +165,7 @@ const Analysis_page = () => {
                       dataKey="value"
                       isAnimationActive={false} // Turn off animation
                     >
-                      {pieChart.map((entry, index) => (
+                      {pieChart.map((_, index: number) => (
                         <Cell
                           key={`cell-${index}`}
                           fill={COLORS[index % COLORS.length]}
@@ -209,11 +177,7 @@ const Analysis_page = () => {
               </div>
               <div className="w-full h-full flex flex-col gap-y-4 justify-center items-center">
                 <p className="text-2xl">{`${currentMonth}: Amount budgeted`}</p>
-                <ResponsiveContainer
-                  isAnimationActive={false}
-                  width="100%"
-                  height="100%"
-                >
+                <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={amountBudgeted}
@@ -227,7 +191,7 @@ const Analysis_page = () => {
                       dataKey="value"
                       isAnimationActive={false} // Turn off animation
                     >
-                      {pieChart.map((entry, index) => (
+                      {pieChart.map((_, index) => (
                         <Cell
                           key={`cell-${index}`}
                           fill={COLORS[index % COLORS.length]}
@@ -242,11 +206,7 @@ const Analysis_page = () => {
               <p className="text-2xl  text-center">
                 Timeline: Amount spent and budgeted{" "}
               </p>
-              <ResponsiveContainer
-                isAnimationActive={false}
-                width="100%"
-                height="100%"
-              >
+              <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={lineData}
                   margin={{

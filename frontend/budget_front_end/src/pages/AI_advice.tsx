@@ -3,8 +3,6 @@ import Sidebar from "../components/sidebar";
 import { useContext, useEffect, useState } from "react";
 import { SidebarContext } from "../context/sidebar_context";
 import { AuthContext } from "../context/auth_context";
-import { set } from "date-fns";
-import { se } from "date-fns/locale";
 
 interface refinedHistorical {
   createdAt: string;

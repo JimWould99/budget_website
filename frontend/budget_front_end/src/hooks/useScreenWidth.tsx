@@ -1,6 +1,4 @@
-import { BudgetsContext } from "../context/budgets_context";
-import { AuthContext } from "../context/auth_context";
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const useWindowSize = () => {
   const [windowSize, setWindowSize] = useState({
