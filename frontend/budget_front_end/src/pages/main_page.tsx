@@ -99,55 +99,59 @@ const Main_page = () => {
     <>
       <Header></Header>
       <div className="flex flex-row w-full">
-        {renderSidebar && <Sidebar></Sidebar>}
-        {showContent && (
+        {!user && (
+          <div className="sm:h-[70vh] h-[50vh] sm:mt-0 mt-12 w-full flex items-center justify-center">
+            <div className="border-solid border-2 border-blue-300 px-4 sm:px-14 sm:py-10 flex flex-col items-center justify-center gap-y-10 rounded-xl w-[90vw] h-[60vh] lg:h-[40vh]  md:w-[60vw] text-center">
+              <p className="text-3xl ">Sign up or login for better budgets.</p>
+              <p className="text-3xl ">
+                BetterBudgetsAI helps you to keep track of your spending. And
+                gives AI insights on how to manage your money better.
+              </p>
+            </div>
+          </div>
+        )}
+        {user && (
           <div className="flex flex-col items-center pt-10 gap-y-6 bg-base-100 w-full ">
-            <div className="flex flex-col md:flex-row w-full px-4 sm:px-24 justify-between md:content-center md:items-center gap-4 ">
-              <div className="flex flex-row justify-between md:justify-normal md:gap-4 ">
-                <button
-                  className="btn btn-secondary text-xl btn-lg shadow-lg"
-                  onClick={() => addBudgetButton()}
-                >
-                  Add budget
-                </button>
-                <button
-                  className="btn btn-secondary text-xl btn-lg shadow-lg"
-                  onClick={() => {
-                    addExpenseButton();
-                  }}
-                >
-                  Add expense
-                </button>
-              </div>
-              {noAccount && (
-                <p className="text-xl text-red-600">
-                  Please login or create an account
-                </p>
-              )}
+            <div className="flex flex-col md:flex-row w-full px-4 sm:px-10 justify-between md:content-center md:items-center gap-4 ">
+              <p className="text-xl">{user.email}</p>
+
               {user && <p className="text-xl">{day}</p>}
             </div>
-            <div className="sm:px-24 px-4 sm:px-0 w-full">
+            <div className="sm:px-10 px-4 sm:px-0 w-full">
               <TotalBudget></TotalBudget>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-4 gap-y-10 sm:px-24 px-4 sm:px-0 w-full mb-10">
+            <div className="grid auto-rows-[1fr] grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-4 gap-y-10 sm:px-10 px-4 sm:px-0 w-full mb-10">
               {budgets &&
                 budgets.length > 0 &&
                 budgets.map((budget, index) => (
                   <Budget_display key={index} budget={budget}></Budget_display>
                 ))}
+              <div
+                onClick={() => addBudgetButton()}
+                className="bg-white rounded-md items-center cursor-pointer justify-center shadow-2xl border-2 border-gray-400 p-4 flex flex-col gap-y-6"
+              >
+                <div className="flex justify-center items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={4}
+                    stroke="currentColor"
+                    className="size-20"
+                    color="#99a1af"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 4.5v15m7.5-7.5h-15"
+                    />
+                  </svg>
+                  <p className="text-3xl mb-2 text-gray-400 font-semibold">
+                    New Budget
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-        )}
-        {!showContent && renderSidebar && (
-          <div className="flex flex-col items-center justify-center w-full ">
-            <button
-              onClick={() => {
-                setSideBarShown(false);
-              }}
-              className="btn bg-gray-400 text-3xl"
-            >
-              X
-            </button>
           </div>
         )}
       </div>

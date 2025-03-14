@@ -36,10 +36,10 @@ const Header = () => {
   }
   return (
     <>
-      <div className="position: sticky top-0 z-50 opacity-95 drop-shadow-xl bg-base-300 pb-3 pt-3 sm:p-0 sm:h-20 w-full flex justify-center ">
-        <div className="md:pr-24 md:pl-52 sm:pr-24 sm:pl-24 px-4  w-full sm:gap-0 gap-4 flex flex-row sm:ml-0 justify-between sm:justify-between sm:content-center sm:items-center">
+      <div className="sticky top-0 z-50 opacity-95 drop-shadow-xl bg-primary py-4 w-full flex justify-center ">
+        <div className="md:px-10 sm:px-6 px-4  w-full sm:gap-0 gap-4 flex flex-row sm:ml-0 justify-between sm:justify-between sm:content-center sm:items-center">
           <Link className="hidden sm:block" to="/">
-            <h1 className="text-3xl font-bold text-primary">
+            <h1 className="text-3xl font-bold text-primary-content">
               BetterBudgets AI
             </h1>
           </Link>
@@ -64,38 +64,44 @@ const Header = () => {
               />
             </svg>
           </button>
-          <div className="flex gap-4 w-100">
+          <div className="flex items-center gap-4 w-100">
             {!user && (
               <>
                 <Link to="/sign_up">
-                  <button className="btn btn-accent text-lg shadow-lg">
-                    Sign up
+                  <button className="btn btn-secondary btn-sm w-24 h-10 pyt text-lg shadow-lg">
+                    Sign Up
                   </button>
                 </Link>
                 <Link to="/login">
-                  <button className="btn btn-accent text-lg shadow-lg">
-                    Log in
+                  <button className="btn btn-secondary btn-sm w-24 h-10 pyt text-lg shadow-lg">
+                    Login
                   </button>
                 </Link>
               </>
             )}
             {user && (
               <>
-                <button className="max-w-[200px]  btn btn-accent text-lg shadow-lg">
-                  {TruncateText({ text: user.email })}
-                </button>
                 <button
                   onClick={() => logoutButton()}
-                  className="btn px-2 sm:btn-md btn-accent text-lg shadow-lg"
+                  className="btn btn-secondary btn-sm w-24 h-10 pyt text-lg shadow-lg"
                 >
                   <p className="hidden sm:block ">Log out</p>
-                  <p className="sm:hidden block"></p>
-                  <img
-                    className="sm:hidden block"
-                    src={logout_svg}
-                    width={24}
-                    height={24}
-                  />
+                  <svg
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 18 16"
+                    className="w-8 h-10 sm:hidden block"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2.5"
+                      color="white"
+                      d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"
+                    />
+                  </svg>
                 </button>
               </>
             )}

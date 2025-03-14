@@ -27,11 +27,11 @@ const TotalBudget = () => {
     budget_total / expense_total <= 1.33333 &&
     budget_total / expense_total >= 1
   ) {
-    barDisplay = "progress progress-warning w-full h-3.5";
+    barDisplay = "progress progress-primary w-full h-3.5 bg-gray-400";
   } else if (budget_total > expense_total) {
-    barDisplay = "progress progress-primary  w-full h-3.5";
+    barDisplay = "progress progress-accent  w-full h-3.5 bg-gray-400";
   } else {
-    barDisplay = "progress progress-error w-full h-3.5";
+    barDisplay = "progress progress-error w-full h-3.5 bg-gray-400";
   }
 
   return (

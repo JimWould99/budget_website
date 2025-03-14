@@ -44,11 +44,11 @@ const Budget_display = ({ budget }: { budget: Budget }) => {
   }
 
   if (amount / expense_amount <= 1.33333 && amount / expense_amount >= 1) {
-    barDisplay = "progress progress-warning w-full h-3.5";
+    barDisplay = "progress progress-primary bg-gray-400 w-full h-3.5";
   } else if (amount > expense_amount) {
-    barDisplay = "progress progress-primary w-full h-3.5";
+    barDisplay = "progress progress-accent w-full h-3.5 bg-gray-400";
   } else {
-    barDisplay = "progress progress-error w-full h-3.5";
+    barDisplay = "progress progress-error w-full h-3.5 bg-gray-400";
   }
 
   function expenseClick() {
@@ -67,7 +67,7 @@ const Budget_display = ({ budget }: { budget: Budget }) => {
 
   return (
     <>
-      <div className="bg-white rounded-md shadow-2xl border-2 border-black p-4 flex flex-col gap-y-6">
+      <div className="bg-white rounded-md shadow-2xl border-2 border-primary p-4 flex flex-col gap-y-6">
         <div className="flex justify-between">
           <p className="text-xl">{name}</p>
           <p className="text-xl">
@@ -91,13 +91,13 @@ const Budget_display = ({ budget }: { budget: Budget }) => {
         <div className="flex justify-between gap-4">
           <button
             onClick={() => expenseClick()}
-            className="btn btn-accent btn-md shadow-lg"
+            className="btn btn-neutral btn-md shadow-lg"
           >
             Add expense
           </button>
           <button
             onClick={() => budgetClick()}
-            className="btn btn-accent btn-md shadow-lg"
+            className="btn btn-neutral btn-md shadow-lg"
           >
             View expenses
           </button>

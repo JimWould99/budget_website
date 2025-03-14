@@ -2,15 +2,19 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   themes: {
-    themes: ["lemonade"],
+    themes: ["customTheme"],
   },
   daisyui: {
     themes: [
       {
-        lemonade: {
-          ...require("daisyui/src/theming/themes")["lemonade"],
-          error: "#880808",
-          warning: "#FFBF00",
+        customTheme: {
+          primary: "0B406F", //darkest blue
+          "primary-content": "D6F3FF", // lightest blue
+          secondary: "0078D7", //medium blue of header buttons
+          "secondary-content": "ffffff", // lightest blue
+          accent: "7CC6FD", //second lightest blue of selected
+          "base-300": "1A202C", //darkest blue
+          neutral: "#48d1ff",
         },
       },
     ],
