@@ -145,110 +145,95 @@ const Analysis_page = () => {
     <>
       <Header></Header>
       <div className="flex flex-row w-full">
-        {renderSidebar && <Sidebar></Sidebar>}
-        {showContent && (
-          <div className="h-full w-full">
-            <div className="w-full  mt-8 h-[100vh] md:h-[45vh] flex flex-col gap-8 lg:gap-0 lg:flex-row justify-apart">
-              <div className="w-full h-full flex flex-col gap-y-4 justify-center items-center">
-                <p className="text-2xl">{`${currentMonth}: Amount spent`}</p>
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={pieChart}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={true}
-                      // label={renderCustomizedLabel}
-                      label={({ name }) => name} // Displaying the name
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                      isAnimationActive={false} // Turn off animation
-                    >
-                      {pieChart.map((_, index: number) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-                    </Pie>
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="w-full h-full flex flex-col gap-y-4 justify-center items-center">
-                <p className="text-2xl">{`${currentMonth}: Amount budgeted`}</p>
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={amountBudgeted}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={true}
-                      // label={renderCustomizedLabel}
-                      label={({ name }) => name} // Displaying the name
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                      isAnimationActive={false} // Turn off animation
-                    >
-                      {pieChart.map((_, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-                    </Pie>
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-            <div className="lg:mt-20 mt-12 md:mt-80 mb-32 h-[60vh] w-full flex flex-col gap-4 justify-center items-center">
-              <p className="text-2xl  text-center">
-                Timeline: Amount spent and budgeted{" "}
-              </p>
+        <div className="h-full w-full">
+          <div className="w-full  mt-8 h-[100vh] md:h-[45vh] flex flex-col gap-8 lg:gap-0 lg:flex-row justify-apart">
+            <div className="w-full h-full flex flex-col gap-y-4 justify-center items-center">
+              <p className="text-2xl">{`${currentMonth}: Amount spent`}</p>
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart
-                  data={lineData}
-                  margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 5,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line
-                    type="monotone"
-                    dataKey="Amount spent"
-                    stroke="#8884d8"
-                    activeDot={{ r: 8 }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="Amount budgeted"
-                    stroke="#82ca9d"
-                  />
-                </LineChart>
+                <PieChart>
+                  <Pie
+                    data={pieChart}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={true}
+                    // label={renderCustomizedLabel}
+                    label={({ name }) => name} // Displaying the name
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                    isAnimationActive={false} // Turn off animation
+                  >
+                    {pieChart.map((_, index: number) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="w-full h-full flex flex-col gap-y-4 justify-center items-center">
+              <p className="text-2xl">{`${currentMonth}: Amount budgeted`}</p>
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={amountBudgeted}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={true}
+                    // label={renderCustomizedLabel}
+                    label={({ name }) => name} // Displaying the name
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                    isAnimationActive={false} // Turn off animation
+                  >
+                    {pieChart.map((_, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
               </ResponsiveContainer>
             </div>
           </div>
-        )}
-        {!showContent && renderSidebar && (
-          <div className="flex flex-col items-center justify-center w-full ">
-            <button
-              onClick={() => {
-                setSideBarShown(false);
-              }}
-              className="btn bg-gray-400 text-3xl"
-            >
-              X
-            </button>
+          <div className="lg:mt-20 mt-12 md:mt-80 mb-32 h-[60vh] w-full flex flex-col gap-4 justify-center items-center">
+            <p className="text-2xl  text-center">
+              Timeline: Amount spent and budgeted{" "}
+            </p>
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={lineData}
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="Amount spent"
+                  stroke="#8884d8"
+                  activeDot={{ r: 8 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="Amount budgeted"
+                  stroke="#82ca9d"
+                />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
-        )}
+        </div>
       </div>
     </>
   );

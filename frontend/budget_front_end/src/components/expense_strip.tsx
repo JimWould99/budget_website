@@ -1,7 +1,8 @@
 import { BudgetsContext } from "../context/budgets_context";
 import { AuthContext } from "../context/auth_context";
-import { useContext, useState } from "react";
+import { useContext, useState, useCallback } from "react";
 import useScreenWidth from "../hooks/useScreenWidth";
+import ConfirmDelete from "./confirm_delete";
 
 interface Expense {
   amount: number;
@@ -13,7 +14,21 @@ interface Expense {
   userId: string;
 }
 
-const Expense_strip = ({ expense }: { expense: Expense }) => {
+interface Budget {
+  amount: number;
+  createdAt: string;
+  id: string;
+  name: string;
+  userId: string;
+}
+
+const Expense_strip = ({
+  expense,
+  budget,
+}: {
+  expense: Expense;
+  budget: Budget;
+}) => {
   const { user } = useContext(AuthContext);
   //const { updateExpense, deleteExpense } = useContext(BudgetsContext);
   const budgetsContext = useContext(BudgetsContext);
@@ -29,20 +44,19 @@ const Expense_strip = ({ expense }: { expense: Expense }) => {
   //console.log("useWindowSize width", useWindowSize.width);
 
   const truncateText = ({ text }: { text: string }) => {
-    if (text.length <= 10 && useWindowSize.width >= 640) {
+    if (text.length <= 14 || useWindowSize.width <= 640) {
       return <span className="text-xl">{text}</span>;
-    } else if (text.length <= 14 && useWindowSize.width >= 640) {
-      return <span className="text-lg">{text}</span>;
-    } else if (text.length <= 20 && useWindowSize.width >= 640) {
-      return <span className="text-md">{text}</span>;
-    } else if (useWindowSize.width >= 640) {
-      const truncatedText = `${text.slice(0, 16)}...`;
-      return <span className="text-md">{truncatedText}</span>;
-    } else if (useWindowSize.width <= 640 && text.length >= 30) {
-      const truncatedText = `${text.slice(0, 25)}...`;
-      return <span className="text-xl">{truncatedText}</span>;
     } else {
-      return <span className="text-xl">{text}</span>;
+      const truncatedText = `${text.slice(0, 14)}`;
+      const extraText = text.slice(14, text.length);
+      return (
+        <div className="text-xl">
+          {truncatedText} <span className=" group-hover:hidden">...</span>
+          <span className="hidden group-hover:block bg-white group-hover:absolute group-hover:z-10">
+            {extraText}
+          </span>
+        </div>
+      );
     }
   };
 
@@ -85,7 +99,15 @@ const Expense_strip = ({ expense }: { expense: Expense }) => {
     }
   };
 
-  const deleteExpenseClick = async (expenseId: string) => {
+  function deleteExpenseClick() {
+    const budgetDeleteModel = document.getElementById(`${expense.id}:delete`);
+    if (budgetDeleteModel) {
+      (budgetDeleteModel as HTMLDialogElement).showModal();
+    }
+    //(document.getElementById(`${budget.id}`) as HTMLDialogElement)?.close();
+  }
+
+  /*const deleteExpenseClick = async (expenseId: string) => {
     const options = {
       method: "POST",
       headers: {
@@ -102,15 +124,15 @@ const Expense_strip = ({ expense }: { expense: Expense }) => {
       dispatch({ type: "deleteExpense", payload: expenseId });
       //deleteExpense(expenseId);
     }
-  };
+  };*/
 
   return (
     <>
       <div
         key={expense.id}
-        className="grid grid-cols-3 grid-rows-2 sm:grid-cols-3 sm:grid-rows-1 items-center mb-3"
+        className="group pb-1 grid border-b-2 border-gray-300 grid-cols-3 grid-rows-2 sm:grid-cols-3 sm:grid-rows-1 items-center mb-3"
       >
-        <p className="col-span-2 sm:col-span-1">
+        <p className="col-span-3 sm:col-span-1">
           {truncateText({ text: expense.name })}
         </p>
         <div className=" grid grid-cols-[100px_auto] w-[140px] gap-4 items-center col-start-1 sm:col-start-2 row-start-2 sm:row-start-1">
@@ -142,7 +164,7 @@ const Expense_strip = ({ expense }: { expense: Expense }) => {
             stroke="currentColor"
             className="size-6 text-red-500 hover:cursor-pointer"
             onClick={() => {
-              deleteExpenseClick(expense.id);
+              deleteExpenseClick();
             }}
           >
             <path
@@ -154,6 +176,7 @@ const Expense_strip = ({ expense }: { expense: Expense }) => {
           </svg>
         </div>
       </div>
+      <ConfirmDelete expense={expense}></ConfirmDelete>
     </>
   );
 };

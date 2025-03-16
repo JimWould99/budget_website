@@ -15,6 +15,7 @@ export default {
           accent: "7CC6FD", //second lightest blue of selected
           "base-300": "1A202C", //darkest blue
           neutral: "#48d1ff",
+          error: "#ff4d4d",
         },
       },
     ],
